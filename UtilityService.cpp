@@ -28,3 +28,44 @@ public:
     void setFixedMeterRate(double rate) { fixedMeterRate = rate; }
     void setUsageRate(double rate) { usageRate = rate; }
 }
+
+class NaturalGas : public UtilityService {
+    public:
+        NaturalGas(int pid, double fixedRate, double usageRate) : UtilityService("Natural Gas", pid, fixedRate, usageRate) {}
+    
+        double calculateCost(double usage) override {
+            return fixedMeterRate + (usage * usageRate);
+        }
+};
+
+class InternetService : public UtilityService {
+    protected:
+        string subType;
+    public:
+        InternetService(int pid, double fixedRate, double usageRate, string type) : UtilityService("Internet", pid, fixedRate, usageRate) {
+            subType = type;
+        }
+    
+        void setSubType(string type) { subType = type; }
+        string getSubType() { return subType; }
+    
+        double calculateCost(double usage) override {
+            return fixedMeterRate + usageRate;
+        }
+};
+
+class HydroService : public UtilityService {
+    protected:
+        string subType;
+    public:
+        HydroService(int pid, double fixedRate, double usageRate, string type) : UtilityService("Hydro", pid, fixedRate, usageRate) {
+            subType = type;
+        }
+    
+        void setSubType(string type) { subType = type; }
+        string getSubType() { return subType; }
+    
+        double calculateCost(double usage) override {
+            return fixedMeterRate + (usage * usageRate);
+        }
+};
