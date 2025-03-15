@@ -27,7 +27,7 @@ public:
     void setProviderID(int pid) { providerID = pid; }
     void setFixedMeterRate(double rate) { fixedMeterRate = rate; }
     void setUsageRate(double rate) { usageRate = rate; }
-}
+};
 
 class NaturalGas : public UtilityService {
     public:
