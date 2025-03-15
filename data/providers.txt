@@ -1,0 +1,11 @@
+ProviderID,Provider Name
+1,Bell
+2,Enbridge
+3,Rogers
+4,Enwin
+5,Fido
+6,Koodo
+7,PlanetEnergy
+8,Link Energy
+9,MyRate Energy
+10,RiteRate Energy
