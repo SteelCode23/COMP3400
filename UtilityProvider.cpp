@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 class UtilityProvider {
     protected:
         int providerID;
