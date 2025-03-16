@@ -31,7 +31,8 @@ struct Rate {
     int serviceId;
     int providerId;
     string rateName;
-    float rateAmount;
+    float variableRateAmount;
+    float fixedRateAmount;
     string unitOfMeasure; 
     bool MeasuredUsage;
 };
@@ -51,6 +52,12 @@ struct Bill {
 
 };
 
+struct Payments{
+    int paymentId;
+    int billId;
+    float paymentAmount;
+};
+
 
 
 class BatchService{
@@ -58,16 +65,19 @@ class BatchService{
     public:
     BatchService();
     void BillingBatch(int BillCalendarID);
+    void SimulatePayments(int BillCalendarID);
     void CalculateOverdue();
 
     private:
     int getBillingID(const string& filename);
+    int getPaymentID(const string& filename);
     vector<Customer> loadCustomers(const string& filename);
 
     vector<Usage> loadUsage(const string& filename, int BillCalendarID);
     vector<Rate> loadRates(const string& filename);
     vector<Bill> loadBills(const string& filename);
     void saveBills(const string &filename, const vector<Bill> bills, bool overwrite);
+    void postPayments(const string &filename, const vector<Payments> payments, bool overwrite);
     year_month_day parseDate(const string& dateStr);
 
 

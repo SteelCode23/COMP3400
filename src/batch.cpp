@@ -6,13 +6,34 @@
 #include <chrono>
 #include <iomanip> 
 #include "batch.h"
+#include <random>
 
 using namespace std;
 using namespace std::chrono;
 
-BatchService::BatchService() {
-    
-}
+BatchService::BatchService() {}
+
+
+    int  BatchService::getPaymentID(const string& filename){
+        int nextPaymentID = 1;
+        int testPaymentID;
+        Payments p;
+        ifstream file(filename);
+        string line;        
+        getline(file,line);//skip headers
+        while(getline(file,line)){
+            stringstream ss(line);
+            string token;
+            getline(ss, token, ',');
+            testPaymentID = stoi(token);
+            if(testPaymentID > nextPaymentID){
+                nextPaymentID = testPaymentID;
+            }
+        }
+        file.close();
+        return nextPaymentID;
+    }
+
 
    int  BatchService::getBillingID(const string& filename){
         int nextBillingID = 1;
@@ -146,7 +167,8 @@ BatchService::BatchService() {
             getline(ss, token, ','); r.serviceId = stoi(token);
             getline(ss, token, ','); r.providerId = stoi(token);
             getline(ss, token, ','); r.rateName = token;
-            getline(ss, token, ','); r.rateAmount = stod(token);
+            getline(ss, token, ','); r.variableRateAmount = stod(token);
+            getline(ss, token, ','); r.fixedRateAmount = stod(token);
             getline(ss, token, ','); r.unitOfMeasure = token;
             getline(ss, token, ','); r.MeasuredUsage = stoi(token);
             
@@ -163,12 +185,14 @@ BatchService::BatchService() {
         vector<Rate> rates = loadRates("../data/rates.txt");
         vector<Usage> usageRecords = loadUsage("../data/usage.txt", BillCalendarID);
         int nextBillingID = getBillingID("../data/bills.txt");
+        //Usage Based
         for (const auto& usage : usageRecords){
             if(usage.billCalendarId == BillCalendarID){
-                float rate = 0.0;
+                float variableRate, fixedRate = 0.0;
                 for(const auto& r: rates){
                     if(r.providerId == usage.providerId && r.serviceId == usage.serviceId){
-                        rate = r.rateAmount;
+                        variableRate = r.variableRateAmount;
+                        fixedRate = r.fixedRateAmount;
                         break;
                     }
                 }
@@ -179,7 +203,7 @@ BatchService::BatchService() {
                 newBill.providerId = usage.providerId;
                 newBill.billCalendarID = BillCalendarID;
                 newBill.serviceId = usage.serviceId;
-                newBill.billAmount = usage.usageAmount * rate;
+                newBill.billAmount = (usage.usageAmount * variableRate) + fixedRate;
                 newBill.amountPaid = 0;
                 newBill.paidInFull = false;
                 chrono::sys_days today = floor<days>(system_clock::now()); // Get today's date
@@ -191,6 +215,8 @@ BatchService::BatchService() {
                 bills.push_back(newBill);
             }
         }
+ 
+
         saveBills("../data/bills.txt", bills, false);
 
     }
@@ -226,6 +252,65 @@ BatchService::BatchService() {
 
     }
 
+    void BatchService::SimulatePayments(int BillCalendarID){
+        vector<Bill> bills = loadBills("../data/bills.txt");
+        vector<Payments> payments;
+        /*
+            Since this is only a small application to be used by a single user, the purpose of this 
+            batch is to simlulate the payments that 100 customers would hypothetically make. It will allow
+            95% of customers to make their full payment, and the remaining 5% will either pay nothing, or some
+            percentage of their balance, but they will be delinquent.
+        */
+        random_device  rd;
+        mt19937 gen(rd());
+        uniform_int_distribution<int> dist(1,100);
+        uniform_real_distribution<> dis(0.0,1.0);
+        uniform_real_distribution<> partialPay(0.1,.9);
+        float paymentAmount = 0.0;
+        int paymentId = getPaymentID("../data/payments.txt");
+        sys_days todaySys = floor<days>(system_clock::now());
+        year_month_day today = year_month_day{todaySys};
+        for(auto& bill:bills){
+            if(bill.billCalendarID == BillCalendarID){
+                bool simulatedPayment = dis(gen) < .95;
+                if(simulatedPayment){
+                    paymentAmount = bill.billAmount;
+                    bill.amountPaid = bill.billAmount;
+                    bill.paidInFull = true;                    
+                }
+                else{
+                    if(dis(gen) < .5){ //50% chance of partial vs no payment
+                        bill.amountPaid = 0.0;
+                        bill.paidInFull = false;
+                    }
+                    else{
+                        paymentAmount = bill.billAmount * partialPay(gen);
+                        bill.amountPaid = paymentAmount;
+                        bill.paidInFull = false;
+                    }
+                }
+                if(paymentAmount > 0.0){
+                    Payments paymentrecord;
+                    paymentrecord.paymentId = paymentId++;
+                    paymentrecord.billId = bill.billId;
+                    paymentrecord.paymentAmount = paymentAmount;
+                    payments.push_back(paymentrecord);
+                }
+            }
+        }
+        saveBills("../data/bills.txt", bills, true);
+        postPayments("../data/payments.txt", payments, false);
+        CalculateOverdue();
+    }
+
+    void BatchService::postPayments(const string &filename, const vector<Payments> payments, bool overwrite){
+        ofstream file(filename, ios::app);
+        for (const auto& payment : payments) {
+            file << "\n" << payment.paymentId << "," << payment.billId << "," << payment.paymentAmount;
+        }
+        file.close();
+    }
+
     void BatchService::CalculateOverdue(){    
 
         vector<Bill> bills = loadBills("../data/bills.txt");
@@ -233,13 +318,9 @@ BatchService::BatchService() {
         for(auto& bill:bills){
             sys_days today = floor<days>(system_clock::now());
             sys_days dueSysDays = sys_days(bill.dueDate);
-            
+           
             auto daysDifference = duration_cast<days>(today - dueSysDays).count();
-            cout << bill.billId << "," << daysDifference << endl;
-
-            if((bill.billAmount - bill.amountPaid  > 0) && (daysDifference > 30)){
-                // cout << "Overdue" << endl;
-                
+            if((bill.billAmount - bill.amountPaid  > 0) && (daysDifference > 30)){              
                 bill.overdue = true;
             }
         }
@@ -247,6 +328,3 @@ BatchService::BatchService() {
         saveBills("../data/bills.txt", bills, true);
 
     }
-    
-
-
