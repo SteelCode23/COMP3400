@@ -15,7 +15,9 @@ int main(){
 
     BatchService service;
     //service.BillingBatch(1);
-    service.CalculateOverdue();
+    service.SimulatePayments(1);
+    //service.CalculateOverdue();
+
     
     return 0;
 }
