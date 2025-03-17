@@ -1,0 +1,101 @@
+CustomerID,Full Name,Address,City,Province,Postal Code
+1,John Smith,123 Riverside Drive East,Windsor,ON,N8Y 3B2
+2,Emily Johnson,456 Ouellette Avenue,Windsor,ON,N9A 7K9
+3,Michael Brown,789 Tecumseh Road East,Windsor,ON,N8X 4P1
+4,Sarah Taylor,1011 Wyandotte Street West,Windsor,ON,N9B 2M3
+5,Robert Wilson,234 Erie Street East,Windsor,ON,N8T 5N7
+6,Lisa Davis,567 Sandwich Street,Windsor,ON,N9A 1A3
+7,David Clark,890 Howard Avenue,Windsor,ON,N8Y 6T8
+8,James Lewis,1213 Walker Road,Windsor,ON,N8X 9P2
+9,Anna Walker,1456 Dougall Avenue,Windsor,ON,N9B 4Q5
+10,Jane Hall,1789 Cabana Road East,Windsor,ON,N8T 2R7
+11,John Taylor,2012 Riverside Drive East,Windsor,ON,N8Y 5M1
+12,Emily Brown,2345 Ouellette Avenue,Windsor,ON,N9A 3N4
+13,Michael Smith,2678 Tecumseh Road East,Windsor,ON,N8X 8J6
+14,Sarah Johnson,2910 Wyandotte Street West,Windsor,ON,N9B 7L9
+15,Robert Clark,3143 Erie Street East,Windsor,ON,N8T 1B2
+16,Lisa Wilson,3476 Sandwich Street,Windsor,ON,N9A 5K4
+17,David Davis,3709 Howard Avenue,Windsor,ON,N8Y 9R7
+18,James Brown,3941 Walker Road,Windsor,ON,N8X 2T1
+19,Anna Smith,4174 Dougall Avenue,Windsor,ON,N9B 6U3
+20,Jane Taylor,4407 Cabana Road East,Windsor,ON,N8T 8W5
+21,John Johnson,4640 Riverside Drive East,Windsor,ON,N8Y 4Y8
+22,Emily Lewis,4873 Ouellette Avenue,Windsor,ON,N9A 1C0
+23,Michael Hall,5105 Tecumseh Road East,Windsor,ON,N8X 3E2
+24,Sarah Davis,5338 Wyandotte Street West,Windsor,ON,N9B 5G4
+25,Robert Brown,5571 Erie Street East,Windsor,ON,N8T 7H6
+26,Lisa Smith,5804 Sandwich Street,Windsor,ON,N9A 9J8
+27,David Taylor,6036 Howard Avenue,Windsor,ON,N8Y 2M0
+28,James Johnson,6269 Walker Road,Windsor,ON,N8X 4N2
+29,Anna Clark,6502 Dougall Avenue,Windsor,ON,N9B 6P4
+30,Jane Wilson,6735 Cabana Road East,Windsor,ON,N8T 8R6
+31,John Davis,6967 Riverside Drive East,Windsor,ON,N8Y 1T8
+32,Emily Hall,7200 Ouellette Avenue,Windsor,ON,N9A 3V0
+33,Michael Lewis,7433 Tecumseh Road East,Windsor,ON,N8X 5X2
+34,Sarah Smith,7666 Wyandotte Street West,Windsor,ON,N9B 7Z4
+35,Robert Taylor,7898 Erie Street East,Windsor,ON,N8T 9B6
+36,Lisa Johnson,8131 Sandwich Street,Windsor,ON,N9A 2D8
+37,David Brown,8364 Howard Avenue,Windsor,ON,N8Y 4F0
+38,James Davis,8597 Walker Road,Windsor,ON,N8X 6H2
+39,Anna Taylor,8829 Dougall Avenue,Windsor,ON,N9B 8K4
+40,Jane Clark,9062 Cabana Road East,Windsor,ON,N8T 1M6
+41,John Wilson,9295 Riverside Drive East,Windsor,ON,N8Y 3P8
+42,Emily Smith,9528 Ouellette Avenue,Windsor,ON,N9A 5R0
+43,Michael Johnson,9760 Tecumseh Road East,Windsor,ON,N8X 7T2
+44,Sarah Brown,9993 Wyandotte Street West,Windsor,ON,N9B 9V4
+45,Robert Davis,1026 Erie Street East,Windsor,ON,N8T 2X6
+46,Lisa Hall,1359 Sandwich Street,Windsor,ON,N9A 4Z8
+47,David Lewis,1591 Howard Avenue,Windsor,ON,N8Y 6B0
+48,James Smith,1824 Walker Road,Windsor,ON,N8X 8D2
+49,Anna Johnson,2057 Dougall Avenue,Windsor,ON,N9B 1F4
+50,Jane Brown,2289 Cabana Road East,Windsor,ON,N8T 3H6
+51,John Taylor,2522 Riverside Drive East,Windsor,ON,N8Y 5K8
+52,Emily Clark,2755 Ouellette Avenue,Windsor,ON,N9A 7M0
+53,Michael Wilson,2988 Tecumseh Road East,Windsor,ON,N8X 9N2
+54,Sarah Davis,3220 Wyandotte Street West,Windsor,ON,N9B 2P4
+55,Robert Smith,3453 Erie Street East,Windsor,ON,N8T 4R6
+56,Lisa Taylor,3686 Sandwich Street,Windsor,ON,N9A 6T8
+57,David Johnson,3919 Howard Avenue,Windsor,ON,N8Y 8V0
+58,James Brown,4151 Walker Road,Windsor,ON,N8X 1X2
+59,Anna Lewis,4384 Dougall Avenue,Windsor,ON,N9B 3Z4
+60,Jane Smith,4617 Cabana Road East,Windsor,ON,N8T 5B6
+61,John Hall,4849 Riverside Drive East,Windsor,ON,N8Y 7D8
+62,Emily Wilson,5082 Ouellette Avenue,Windsor,ON,N9A 9F0
+63,Michael Clark,5315 Tecumseh Road East,Windsor,ON,N8X 2H2
+64,Sarah Taylor,5548 Wyandotte Street West,Windsor,ON,N9B 4K4
+65,Robert Johnson,5780 Erie Street East,Windsor,ON,N8T 6M6
+66,Lisa Brown,6013 Sandwich Street,Windsor,ON,N9A 8N8
+67,David Smith,6246 Howard Avenue,Windsor,ON,N8Y 1P0
+68,James Taylor,6479 Walker Road,Windsor,ON,N8X 3R2
+69,Anna Davis,6711 Dougall Avenue,Windsor,ON,N9B 5T4
+70,Jane Johnson,6944 Cabana Road East,Windsor,ON,N8T 7V6
+71,John Lewis,7177 Riverside Drive East,Windsor,ON,N8Y 9X8
+72,Emily Brown,7409 Ouellette Avenue,Windsor,ON,N9A 2Z0
+73,Michael Smith,7642 Tecumseh Road East,Windsor,ON,N8X 4B2
+74,Sarah Wilson,7875 Wyandotte Street West,Windsor,ON,N9B 6D4
+75,Robert Hall,8108 Erie Street East,Windsor,ON,N8T 8F6
+76,Lisa Clark,8340 Sandwich Street,Windsor,ON,N9A 1H8
+77,David Taylor,8573 Howard Avenue,Windsor,ON,N8Y 3K0
+78,James Johnson,8806 Walker Road,Windsor,ON,N8X 5M2
+79,Anna Smith,9038 Dougall Avenue,Windsor,ON,N9B 7N4
+80,Jane Davis,9271 Cabana Road East,Windsor,ON,N8T 9P6
+81,John Brown,9504 Riverside Drive East,Windsor,ON,N8Y 2R8
+82,Emily Taylor,9737 Ouellette Avenue,Windsor,ON,N9A 4T0
+83,Michael Johnson,9969 Tecumseh Road East,Windsor,ON,N8X 6V2
+84,Sarah Lewis,10202 Wyandotte Street West,Windsor,ON,N9B 8X4
+85,Robert Smith,10435 Erie Street East,Windsor,ON,N8T 1Z6
+86,Lisa Wilson,10668 Sandwich Street,Windsor,ON,N9A 3B8
+87,David Brown,10900 Howard Avenue,Windsor,ON,N8Y 5D0
+88,James Clark,11133 Walker Road,Windsor,ON,N8X 7F2
+89,Anna Taylor,11366 Dougall Avenue,Windsor,ON,N9B 9H4
+90,Jane Smith,11699 Cabana Road East,Windsor,ON,N8T 2K6
+91,John Johnson,11931 Riverside Drive East,Windsor,ON,N8Y 4M8
+92,Emily Davis,12164 Ouellette Avenue,Windsor,ON,N9A 6N0
+93,Michael Brown,12397 Tecumseh Road East,Windsor,ON,N8X 8P2
+94,Sarah Hall,12630 Wyandotte Street West,Windsor,ON,N9B 1R4
+95,Robert Taylor,12862 Erie Street East,Windsor,ON,N8T 3T6
+96,Lisa Smith,13095 Sandwich Street,Windsor,ON,N9A 5V8
+97,David Johnson,13328 Howard Avenue,Windsor,ON,N8Y 7X0
+98,James Lewis,13561 Walker Road,Windsor,ON,N8X 9Z2
+99,Anna Brown,13793 Dougall Avenue,Windsor,ON,N9B 2B4
+100,Jane Clark,14026 Cabana Road East,Windsor,ON,N8T 4D6

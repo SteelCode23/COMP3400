@@ -1,0 +1,25 @@
+RateID,ServiceID,ProviderID,RateName,VariableRateAmount,FixedRateAmount,UnitofMeasure,MeasuredService
+1,2,1,Bell Internet,0,80,Monthly,0
+2,3,1,Bell TV,0,100,Monthly,0
+3,4,1,Bell Mobile,0,70,Monthly,0
+4,5,1,Bell Home Phone,0,30,Monthly,0
+5,2,3,Rogers Internet,0,90,Monthly,0
+6,3,3,Rogers TV,0,105,Monthly,0
+7,4,3,Rogers Mobile,0,30,Monthly,0
+8,5,3,Rogers Home Phone,0,20,Monthly,0
+9,2,5,Fido Internet,0,75,Monthly,0
+10,3,5,Fido TV,0,95,Monthly,0
+11,4,5,Fido Mobile,0,40,Monthly,0
+12,5,5,Fido Home Phone,0,15,Monthly,0
+13,2,6,Koodo Internet,0,50,Monthly,0
+14,3,6,Koodo TV,0,90,Monthly,0
+15,4,6,Koodo Mobile,0,50,Monthly,0
+16,5,6,Koodo Home Phone,0,10,Monthly,0
+17,6,4,Enwin Hydro,0.113,20,kWh,1
+18,7,4,Enwin Water,0.02884,25,m3,1
+19,8,4,Enwin Sewage,0.0037429,5,m3,1
+20,1,2,Enbridge Gas,0.071054,40,m3,1
+21,1,7,PlanetEnergy Gas,0.06,40,m3,1
+22,1,8,Link Energy gas,0.075,40,m3,1
+23,1,9,MyRate Gas,0.09,40,m3,1
+24,1,10,RiteRate Gas,0.065,40,m3,1
