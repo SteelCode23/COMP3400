@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "UtilityProvider.h"
+#include "Customer.h"
+#include "Bill.h"
+#include "Date.h"
 
 using namespace std;
 

@@ -1,49 +1,67 @@
+#include "Bill.h"
 #include <iostream>
-#include <vector>
-#include <string>
+#include <chrono>
+#include "Date.h"
 
-using namespace std;
+Bill::Bill() : billId(0), customerId(0), providerId(0), serviceId(0),
+               billCalendarID(0), billAmount(0.0), amountPaid(0.0),
+               paidInFull(false), overdue(false) {}
 
-class Bill {
-    int billID, customerID, providerID;
-    string serviceType;
-    double usage, totalCost;
-    Date issueDate, dueDate;
-    bool isPaid;
+Bill::Bill(int bid, int cid, int pid, int sid, int bcid, double amount,
+           double paid, bool status, year_month_day bdate, year_month_day ddate)
+    : billId(bid), customerId(cid), providerId(pid), serviceId(sid),
+      billCalendarID(bcid), billAmount(amount), amountPaid(paid),
+      paidInFull(status), billDate(bdate), dueDate(ddate), overdue(false) {}
 
-public:
-    Bill(int bid, int cid, int pid, string type, double usage, Date issue, Date due) 
-        : issueDate(issue), dueDate(due) {
-        billID = bid;
-        customerID = cid;
-        providerID = pid;
-        serviceType = type;
-        this->usage = usage;
-        isPaid = false;
-        totalCost = 0;
+int Bill::getBillId() { return billId; }
+int Bill::getCustomerId() { return customerId; }
+int Bill::getProviderId() { return providerId; }
+int Bill::getServiceId() { return serviceId; }
+int Bill::getBillCalendarID() { return billCalendarID; }
+double Bill::getBillAmount() { return billAmount; }
+double Bill::getAmountPaid() { return amountPaid; }
+bool Bill::getIsPaid() { return paidInFull; }
+year_month_day Bill::getBillDate() { return billDate; }
+year_month_day Bill::getDueDate() { return dueDate; }
+bool Bill::getOverdue() { return overdue; }
+
+void Bill::setBillId(int id) { billId = id; }
+void Bill::setCustomerId(int id) { customerId = id; }
+void Bill::setProviderId(int id) { providerId = id; }
+void Bill::setServiceId(int id) { serviceId = id; }
+void Bill::setBillCalendarID(int id) { billCalendarID = id; }
+void Bill::setBillAmount(double amount) { billAmount = amount; }
+void Bill::setAmountPaid(double amount) { amountPaid = amount; }
+void Bill::setPaidInFull(bool status) { paidInFull = status; }
+void Bill::setBillDate(year_month_day date) { billDate = date; }
+void Bill::setDueDate(year_month_day date) { dueDate = date; }
+void Bill::setOverdue(bool status) { overdue = status; }
+
+void Bill::displayBill() {
+    cout << "Bill ID: " << billId << " | Customer ID: " << customerId
+         << " | Provider ID: " << providerId << " | Service ID: " << serviceId
+         << " | Calendar ID: " << billCalendarID 
+         << " | Amount: $" << billAmount << " | Paid: $" << amountPaid
+         << " | Status: " << (paidInFull ? "Paid" : "Unpaid") 
+         << " | Overdue: " << (overdue ? "Yes" : "No")
+         << " | Bill Date: " << int(billDate.year()) << "-" 
+         << unsigned(billDate.month()) << "-" << unsigned(billDate.day())
+         << " | Due: " << int(dueDate.year()) << "-" 
+         << unsigned(dueDate.month()) << "-" << unsigned(dueDate.day()) << endl;
+}
+bool Bill::isOverdue(Date currentDate) {
+    if (!paidInFull) {
+        if (currentDate.year > static_cast<int>(dueDate.year())) {
+            return true;
+        } else if (currentDate.year == static_cast<int>(dueDate.year())) {
+            if (currentDate.month > unsigned(dueDate.month())) {
+                return true;
+            } else if (currentDate.month == unsigned(dueDate.month())) {
+                if (currentDate.day > unsigned(dueDate.day())) {
+                    return true;
+                }
+            }
+        }
     }
-
-    // Getters and Setters
-    int getBillID() { return billID; }
-    int getCustomerID() { return customerID; }
-    int getProviderID() { return providerID; }
-    string getServiceType() { return serviceType; }
-    double getUsage() { return usage; }
-    double getTotalCost() { return totalCost; }
-    bool getIsPaid() { return isPaid; }
-
-    void setTotalCost(double cost) { totalCost = cost; }
-    void markPaid() { isPaid = true; }
-
-    bool isOverdue(Date currentDate) {
-        return dueDate.isOverdue(currentDate);
-    }
-
-    void displayBill() {
-        cout << "Bill ID: " << billID << " | Customer ID: " << customerID
-             << " | Provider ID: " << providerID << " | Service: " << serviceType
-             << " | Amount: $" << totalCost << " | Status: " << (isPaid ? "Paid" : "Unpaid") << " | Due: ";
-        dueDate.display();
-        cout << endl;
-    }
-};
+    return false;
+}

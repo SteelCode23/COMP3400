@@ -1,43 +1,35 @@
+#include "Customer.h"
 #include <iostream>
-#include <vector>
-#include <string>
 
-using namespace std;
+Customer::Customer(int id, const std::string& name, const std::string& address, const std::string& phoneNumber)
+    : customerID(id), name(name), address(address), phoneNumber(phoneNumber) {}
 
-class Customer {
-    int customerID;
-    string name, address;
-    vector<UtilityService*> subscribedServices;
-    vector<Bill*> billingHistory;
+Customer::Customer() : customerID(0), name(""), address(""), phoneNumber("") {}
 
-public:
-    Customer(int id, string n, string addr) {
-        customerID = id;
-        name = n;
-        address = addr;
-    }
+int Customer::getCustomerID() const { return customerID; }
+std::string Customer::getName() const { return name; }
+std::string Customer::getAddress() const { return address; }
+std::string Customer::getPhoneNumber() const { return phoneNumber; }
 
-    // Getters and Setters
-    int getCustomerID() { return customerID; }
-    string getName() { return name; }
-    string getAddress() { return address; }
+void Customer::setName(const std::string& name) { this->name = name; }
+void Customer::setAddress(const std::string& address) { this->address = address; }
+void Customer::setPhoneNumber(const std::string& phoneNumber) { this->phoneNumber = phoneNumber; }
 
-    void subscribeService(UtilityService* service) { subscribedServices.push_back(service); }
-    void addBill(Bill* bill) { billingHistory.push_back(bill); }
+void Customer::subscribeService(UtilityService* service) { subscribedServices.push_back(service); }
+void Customer::addBill(Bill* bill) { billingHistory.push_back(bill); }
 
-    void viewBills() {
-        cout << "Billing history for " << name << ":\n";
-        for (auto bill : billingHistory) bill->displayBill();
-    }
+void Customer::viewBills() const {
+    std::cout << "Billing history for " << name << ":\n";
+    for (const auto& bill : billingHistory) bill->displayBill();
+}
 
-    void makePayment(int billID) {
-        for (auto bill : billingHistory) {
-            if (bill->getBillID() == billID && !bill->getIsPaid()) {
-                bill->markPaid();
-                cout << "Payment made for Bill ID " << billID << endl;
-                return;
-            }
+void Customer::makePayment(int billID) {
+    for (auto& bill : billingHistory) {
+        if (bill->getBillId() == billID && !bill->getIsPaid()) {
+            bill->setPaidInFull(true);
+            std::cout << "Payment made for Bill ID " << billID << "\n";
+            return;
         }
-        cout << "Bill not found or already paid.\n";
     }
-};
+    std::cout << "Bill not found or already paid.\n";
+}

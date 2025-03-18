@@ -7,6 +7,11 @@
 #include <iomanip> 
 #include "batch.h"
 #include <random>
+#include "Bill.h"
+#include "Customer.h"
+#include "Payments.h" 
+#include "Rate.h"
+#include "Usage.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -60,7 +65,7 @@ BatchService::BatchService() {}
         char dash1, dash2;
         stringstream ss(dateStr);
         ss >> y >> dash1 >> m >> dash2 >> d;
-        return year_month_day{year{y}, month{m}, day{d}};
+        return year_month_day{year{y}, month{static_cast<unsigned int>(m)}, day{static_cast<unsigned int>(d)}};
     }   
 
 

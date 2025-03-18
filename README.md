@@ -30,3 +30,5 @@ Create a system that maintains all the necessary information about:
 
 You can search and find rates for any of these types of utilities. Make sure that billing also includes the fixed components, i.e., meter rate for all types of the above-mentioned utilities.
 
+To run code: ./bin/main
+
