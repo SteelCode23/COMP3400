@@ -125,7 +125,7 @@ BatchService::BatchService() {}
             string token;
             Customer c;
             getline(ss, token, ',');
-            c.id = stoi(token);
+            c.customerID = stoi(token);
             getline(ss, token, ',');
             c.name = token;
             customers.push_back(c);

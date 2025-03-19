@@ -8,6 +8,9 @@
 
 class Customer {
 private:
+
+
+public:
     int customerID;
     std::string name;
     std::string address;
@@ -15,8 +18,6 @@ private:
     std::string phoneNumber;
     std::vector<UtilityService*> subscribedServices;
     std::vector<Bill*> billingHistory;
-
-public:
     Customer(int id, const std::string& name, const std::string& address, const std::string& phoneNumber);
     Customer();
 
