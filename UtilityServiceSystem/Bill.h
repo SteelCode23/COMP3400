@@ -5,6 +5,14 @@
 #include <chrono>
 #include <iostream>
 #include "Date.h"
+#include <vector>
+#include <iostream>
+#include <chrono>
+#include "Date.h"
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <chrono>
 
 using namespace std;
 using namespace std::chrono;
@@ -39,7 +47,7 @@ public:
     year_month_day getBillDate();
     year_month_day getDueDate();
     bool getOverdue();
-
+    year_month_day parseDate(const string& dateStr);
     void setBillId(int id);
     void setCustomerId(int id);
     void setProviderId(int id);
@@ -51,8 +59,17 @@ public:
     void setBillDate(year_month_day date);
     void setDueDate(year_month_day date);
     void setOverdue(bool status);
-
+    vector<Bill> loadBills(const string& filename);
+    Bill readBillById(int billId);
     void displayBill();
+    void displayBill(Bill bill);
+    void readAndDisplayBillById(int billId);
+    void saveBills(const string &filename, const vector<Bill> bills, bool overwrite);
+    void updateBill();
+    void listOverdueBills();
+    void updateBillCalendar();
+
+    
     bool isOverdue(Date currentDate);
 };
 

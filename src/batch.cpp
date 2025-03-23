@@ -186,10 +186,10 @@ BatchService::BatchService() {}
 
     void BatchService::BillingBatch(int BillCalendarID){
         vector<Bill> bills;
-        vector<Customer> customers = loadCustomers("../data/customers.txt");
-        vector<Rate> rates = loadRates("../data/rates.txt");
-        vector<Usage> usageRecords = loadUsage("../data/usage.txt", BillCalendarID);
-        int nextBillingID = getBillingID("../data/bills.txt");
+        vector<Customer> customers = loadCustomers("data/customers.txt");
+        vector<Rate> rates = loadRates("data/rates.txt");
+        vector<Usage> usageRecords = loadUsage("data/usage.txt", BillCalendarID);
+        int nextBillingID = getBillingID("data/bills.txt");
         //Usage Based
         for (const auto& usage : usageRecords){
             if(usage.billCalendarId == BillCalendarID){
@@ -222,7 +222,7 @@ BatchService::BatchService() {}
         }
  
 
-        saveBills("../data/bills.txt", bills, false);
+        saveBills("data/bills.txt", bills, false);
 
     }
 
@@ -258,7 +258,7 @@ BatchService::BatchService() {}
     }
 
     void BatchService::SimulatePayments(int BillCalendarID){
-        vector<Bill> bills = loadBills("../data/bills.txt");
+        vector<Bill> bills = loadBills("data/bills.txt");
         vector<Payments> payments;
         /*
             Since this is only a small application to be used by a single user, the purpose of this 
@@ -272,7 +272,7 @@ BatchService::BatchService() {}
         uniform_real_distribution<> dis(0.0,1.0);
         uniform_real_distribution<> partialPay(0.1,.9);
         float paymentAmount = 0.0;
-        int paymentId = getPaymentID("../data/payments.txt");
+        int paymentId = getPaymentID("data/payments.txt");
         sys_days todaySys = floor<days>(system_clock::now());
         year_month_day today = year_month_day{todaySys};
         for(auto& bill:bills){
@@ -303,8 +303,8 @@ BatchService::BatchService() {}
                 }
             }
         }
-        saveBills("../data/bills.txt", bills, true);
-        postPayments("../data/payments.txt", payments, false);
+        saveBills("data/bills.txt", bills, true);
+        postPayments("data/payments.txt", payments, false);
         CalculateOverdue();
     }
 
@@ -317,9 +317,7 @@ BatchService::BatchService() {}
     }
 
     void BatchService::CalculateOverdue(){    
-
-        vector<Bill> bills = loadBills("../data/bills.txt");
-
+        vector<Bill> bills = loadBills("data/bills.txt");
         for(auto& bill:bills){
             sys_days today = floor<days>(system_clock::now());
             sys_days dueSysDays = sys_days(bill.dueDate);
@@ -329,7 +327,5 @@ BatchService::BatchService() {}
                 bill.overdue = true;
             }
         }
-
-        saveBills("../data/bills.txt", bills, true);
-
+        saveBills("data/bills.txt", bills, true);
     }
