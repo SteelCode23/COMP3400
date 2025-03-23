@@ -62,7 +62,6 @@ vector<Bill>  Bill::loadBills(const string& filename){
     }    
     string line;
 
-    cout << "Test";
     getline(file,line); //skip header
     while(getline(file,line)){
         stringstream ss(line);
