@@ -1,4 +1,5 @@
 #include "BillCalendar.h"
+#include "Date.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -13,13 +14,13 @@ BillCalendar::BillCalendar() : billCalendarID(0), openClosed(false) {}
 BillCalendar::BillCalendar(int id, year_month_day start, year_month_day end, bool open)
     : billCalendarID(id), startDate(start), endDate(end), openClosed(open) {}
 
-year_month_day BillCalendar::parseDate(const string& dateStr) {
-    int y, m, d;
-    char dash1, dash2;
-    stringstream ss(dateStr);
-    ss >> y >> dash1 >> m >> dash2 >> d;
-    return year_month_day{year{y}, month{static_cast<unsigned int>(m)}, day{static_cast<unsigned int>(d)}};
-}
+// year_month_day BillCalendar::parseDate(const string& dateStr) {
+//     int y, m, d;
+//     char dash1, dash2;
+//     stringstream ss(dateStr);
+//     ss >> y >> dash1 >> m >> dash2 >> d;
+//     return year_month_day{year{y}, month{static_cast<unsigned int>(m)}, day{static_cast<unsigned int>(d)}};
+// }
 
 
 vector<BillCalendar> BillCalendar::readAllBillCalendars() {
@@ -37,9 +38,10 @@ vector<BillCalendar> BillCalendar::readAllBillCalendars() {
         BillCalendar bc;
 
         try {
+            Date d;
             getline(ss, token, ','); bc.billCalendarID = stoi(token);
-            getline(ss, token, ','); bc.startDate = parseDate(token); // Non-static, called on instance
-            getline(ss, token, ','); bc.endDate = parseDate(token);   // Non-static, called on instance
+            getline(ss, token, ','); bc.startDate = d.parseDate(token); // Non-static, called on instance
+            getline(ss, token, ','); bc.endDate = d.parseDate(token);   // Non-static, called on instance
             getline(ss, token, ','); bc.openClosed = stoi(token);
             calendars.push_back(bc);
         } catch (const exception& e) {
@@ -82,7 +84,8 @@ bool BillCalendar::createBillCalendar() {
     getline(cin, startDateStr);
     cout << "Enter End Date (YYYY-MM-DD): "<< endl; 
     getline(cin, endDateStr);
-    BillCalendar newCalendar(newId, parseDate(startDateStr), parseDate(endDateStr), false);
+    Date d;
+    BillCalendar newCalendar(newId, d.parseDate(startDateStr), d.parseDate(endDateStr), false);
     calendars.push_back(newCalendar);
     saveCalendars("data/billcalendar.txt", calendars);
     return true;

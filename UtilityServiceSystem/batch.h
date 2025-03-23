@@ -19,9 +19,6 @@ public:
 
     int getPaymentID(const string& filename);
     int getBillingID(const string& filename);
-    year_month_day parseDate(const string& dateStr);
-
-    vector<Bill> loadBills(const string& filename);
     vector<Customer> loadCustomers(const string& filename);
     vector<Usage> loadUsage(const string& filename, int BillCalendarID);
     vector<Rate> loadRates(const string& filename);

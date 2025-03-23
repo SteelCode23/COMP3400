@@ -59,7 +59,6 @@ int main() {
                        break;
 
                 }
-                batchService.loadBills("../data/bills.txt");
                 break;
             case 2:
                 showCustomerMenu();
@@ -98,7 +97,7 @@ int main() {
         }
 
         waitForKeyPress();
-    } while (choice != 7);
+    } while (choice != 8);
 
     return 0;
 }

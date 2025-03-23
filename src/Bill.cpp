@@ -7,6 +7,7 @@
 #include <fstream>
 #include <sstream>
 #include <chrono>
+#include "Date.h"
 
 using namespace std;
 
@@ -44,15 +45,6 @@ void Bill::setBillDate(year_month_day date) { billDate = date; }
 void Bill::setDueDate(year_month_day date) { dueDate = date; }
 void Bill::setOverdue(bool status) { overdue = status; }
 
-year_month_day Bill::parseDate(const string& dateStr) {
-    int y, m, d;
-    char dash1, dash2;
-    stringstream ss(dateStr);
-    ss >> y >> dash1 >> m >> dash2 >> d;
-    return year_month_day{year{y}, month{static_cast<unsigned int>(m)}, day{static_cast<unsigned int>(d)}};
-}   
-
-
 vector<Bill>  Bill::loadBills(const string& filename){
     vector<Bill> bills;
     ifstream file(filename);
@@ -84,11 +76,14 @@ vector<Bill>  Bill::loadBills(const string& filename){
         getline(ss, token, ',');
         b.paidInFull = stoi(token);
         getline(ss, token, ',');
-        b.billDate = parseDate(token);
+        Date d;
+        b.billDate = d.parseDate(token);
 
         //b.billDate = token;
         getline(ss, token, ',');
-        b.dueDate = parseDate(token);
+
+
+        b.dueDate = d.parseDate(token);
         getline(ss, token, ',');
         b.overdue = stoi(token);
         //b.dueDate = token;
@@ -213,7 +208,8 @@ void Bill::updateBill(){
             cout << "Enter new Due Date (YYYY-MM-DD): ";
             string dateStr;
             getline(cin, dateStr);
-            bill.dueDate = parseDate(dateStr);
+            Date d;
+            bill.dueDate = d.parseDate(dateStr);
             break;
         }
         default:

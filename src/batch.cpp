@@ -69,49 +69,49 @@ BatchService::BatchService() {}
     }   
 
 
-    vector<Bill>  BatchService::loadBills(const string& filename){
-        vector<Bill> bills;
-        ifstream file(filename);
-        string line;
+    // vector<Bill>  BatchService::loadBills(const string& filename){
+    //     vector<Bill> bills;
+    //     ifstream file(filename);
+    //     string line;
 
 
-        getline(file,line); //skip header
-        while(getline(file,line)){
-            stringstream ss(line);
-            string token;
-            Bill b;
-            getline(ss, token, ',');
-            b.billId = stoi(token);
-            getline(ss, token, ',');
-            b.customerId = stoi(token);
-            getline(ss, token, ',');
-            b.providerId = stoi(token);
-            getline(ss, token, ',');
-            b.serviceId = stoi(token);
-            getline(ss, token, ',');
-            b.billCalendarID = stoi(token);
-            getline(ss, token, ',');
-            b.billAmount = stod(token);
-            getline(ss, token, ',');
-            b.amountPaid = stod(token);            
-            getline(ss, token, ',');
-            b.paidInFull = stoi(token);
-            getline(ss, token, ',');
-            b.billDate = parseDate(token);
+    //     getline(file,line); //skip header
+    //     while(getline(file,line)){
+    //         stringstream ss(line);
+    //         string token;
+    //         Bill b;
+    //         getline(ss, token, ',');
+    //         b.billId = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.customerId = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.providerId = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.serviceId = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.billCalendarID = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.billAmount = stod(token);
+    //         getline(ss, token, ',');
+    //         b.amountPaid = stod(token);            
+    //         getline(ss, token, ',');
+    //         b.paidInFull = stoi(token);
+    //         getline(ss, token, ',');
+    //         b.billDate = parseDate(token);
 
-            //b.billDate = token;
-            getline(ss, token, ',');
-            b.dueDate = parseDate(token);
+    //         //b.billDate = token;
+    //         getline(ss, token, ',');
+    //         b.dueDate = parseDate(token);
 
 
-            //b.dueDate = token;
-            bills.push_back(b);
-        }
-        file.close();
+    //         //b.dueDate = token;
+    //         bills.push_back(b);
+    //     }
+    //     file.close();
 
-        return bills;
+    //     return bills;
         
-    }
+    // }
 
     vector<Customer> BatchService::loadCustomers(const string& filename){
         vector<Customer> customers;
@@ -258,7 +258,8 @@ BatchService::BatchService() {}
     }
 
     void BatchService::SimulatePayments(int BillCalendarID){
-        vector<Bill> bills = loadBills("data/bills.txt");
+        Bill bill;
+        vector<Bill> bills = bill.loadBills("data/bills.txt");
         vector<Payments> payments;
         /*
             Since this is only a small application to be used by a single user, the purpose of this 
@@ -317,7 +318,8 @@ BatchService::BatchService() {}
     }
 
     void BatchService::CalculateOverdue(){    
-        vector<Bill> bills = loadBills("data/bills.txt");
+        Bill bill;
+        vector<Bill> bills = bill.loadBills("data/bills.txt");
         for(auto& bill:bills){
             sys_days today = floor<days>(system_clock::now());
             sys_days dueSysDays = sys_days(bill.dueDate);

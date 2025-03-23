@@ -15,7 +15,7 @@ public:
     int billCalendarID;
     year_month_day startDate;
     year_month_day endDate;
-    bool openClosed; // true = open, false = closed
+    bool openClosed; 
 
     BillCalendar();
     BillCalendar(int id, year_month_day start, year_month_day end, bool open);
@@ -26,7 +26,6 @@ public:
     bool isOpen() { return openClosed; }
 
 
-    year_month_day parseDate(const string& dateStr);
     bool createBillCalendar();
     vector<BillCalendar> readAllBillCalendars();
     BillCalendar readBillCalendarById(int billCalendarID);
