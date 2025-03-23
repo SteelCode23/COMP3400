@@ -13,6 +13,8 @@ int main() {
     BillCalendar  openbillcalendar = bc.getCurrentBillCalendar();
     int choice;
     int choice2;
+    Rate r;
+    int choice6;    
     do {
         showMenu();
         choice = getChoice();
@@ -77,13 +79,26 @@ int main() {
                 break;
             case 5:
                 showServiceMenu();
-                cout << "Simulating Payments..." << endl;
-                batchService.SimulatePayments(1);
                 break;
+
+
             case 6:
                 showRatesMenu();
-                cout << "Calculating Overdue Bills..." << endl;
-                batchService.CalculateOverdue();
+
+                choice6 = getChoice();
+                switch(choice6){
+                case 1:
+                    r.createRate();
+                    break;
+                case 2:
+                    r.displayRates();
+                    break;
+                case 3:
+                    r.updateRate();
+                break;
+                    default:
+                        break;
+                }
                 break;
             case 7:
                 showPaymentsMenu();

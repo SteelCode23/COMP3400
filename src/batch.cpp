@@ -100,43 +100,44 @@ vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID
     return usageData;
 }
 
-vector<Rate> BatchService::loadRates(const string& filename) {
-    vector<Rate> rates;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip header
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Rate r;
-        getline(ss, token, ','); r.rateId = stoi(token);
-        getline(ss, token, ','); r.serviceId = stoi(token);
-        getline(ss, token, ','); r.providerId = stoi(token);
-        getline(ss, token, ','); r.rateName = token;
-        getline(ss, token, ','); r.variableRateAmount = stod(token);
-        getline(ss, token, ','); r.fixedRateAmount = stod(token);
-        getline(ss, token, ','); r.unitOfMeasure = token;
-        getline(ss, token, ','); r.MeasuredUsage = stoi(token);
-        rates.push_back(r);
-    }
-    file.close();
-    return rates;
-}
+// vector<Rate> BatchService::loadRates(const string& filename) {
+//     vector<Rate> rates;
+//     ifstream file(filename);
+//     string line;
+//     getline(file, line); // Skip header
+//     while (getline(file, line)) {
+//         stringstream ss(line);
+//         string token;
+//         Rate r;
+//         getline(ss, token, ','); r.rateId = stoi(token);
+//         getline(ss, token, ','); r.serviceId = stoi(token);
+//         getline(ss, token, ','); r.providerId = stoi(token);
+//         getline(ss, token, ','); r.rateName = token;
+//         getline(ss, token, ','); r.variableRateAmount = stod(token);
+//         getline(ss, token, ','); r.fixedRateAmount = stod(token);
+//         getline(ss, token, ','); r.unitOfMeasure = token;
+//         getline(ss, token, ','); r.MeasuredUsage = stoi(token);
+//         rates.push_back(r);
+//     }
+//     file.close();
+//     return rates;
+// }
 
 void BatchService::BillingBatch(int BillCalendarID) {
     vector<Bill> bills;
+    Rate rateObj;
     vector<Customer> customers = loadCustomers("data/customers.txt");
-    vector<Rate> rates = loadRates("data/rates.txt");
+    vector<Rate> rates = rateObj.loadRates("data/rates.txt");
     vector<Usage> usageRecords = loadUsage("data/usage.txt", BillCalendarID);
     int nextBillingID = getBillingID("data/bills.txt");
 
     for (const auto& usage : usageRecords) {
         if (usage.billCalendarId == BillCalendarID) {
             float variableRate = 0.0, fixedRate = 0.0;
-            for (const auto& r : rates) {
-                if (r.providerId == usage.providerId && r.serviceId == usage.serviceId) {
-                    variableRate = r.variableRateAmount;
-                    fixedRate = r.fixedRateAmount;
+            for ( auto& r : rates) {
+                if (r.getProviderId() == usage.providerId && r.getServiceId() == usage.serviceId) {
+                    variableRate = r.getVariableRateAmount();
+                    fixedRate = r.getFixedRateAmount();
                     break;
                 }
             }
