@@ -14,15 +14,6 @@ BillCalendar::BillCalendar() : billCalendarID(0), openClosed(false) {}
 BillCalendar::BillCalendar(int id, year_month_day start, year_month_day end, bool open)
     : billCalendarID(id), startDate(start), endDate(end), openClosed(open) {}
 
-// year_month_day BillCalendar::parseDate(const string& dateStr) {
-//     int y, m, d;
-//     char dash1, dash2;
-//     stringstream ss(dateStr);
-//     ss >> y >> dash1 >> m >> dash2 >> d;
-//     return year_month_day{year{y}, month{static_cast<unsigned int>(m)}, day{static_cast<unsigned int>(d)}};
-// }
-
-
 vector<BillCalendar> BillCalendar::readAllBillCalendars() {
     vector<BillCalendar> calendars;
     ifstream file("data/billcalendar.txt");
@@ -52,7 +43,7 @@ vector<BillCalendar> BillCalendar::readAllBillCalendars() {
     return calendars;
 }
 
-// Save all calendars to file
+
 void BillCalendar::saveCalendars(const string& filename, const vector<BillCalendar>& calendars) {
     ofstream file(filename);
     if (!file.is_open()) {

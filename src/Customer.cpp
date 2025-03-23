@@ -20,7 +20,7 @@ void Customer::addBill(Bill* bill) { billingHistory.push_back(bill); }
 
 void Customer::viewBills() const {
     std::cout << "Billing history for " << name << ":\n";
-    for (const auto& bill : billingHistory) bill->displayBill();
+    //for (const auto& bill : billingHistory) bill->displayBill();
 }
 
 void Customer::makePayment(int billID) {

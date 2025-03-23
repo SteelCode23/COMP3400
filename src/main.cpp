@@ -19,7 +19,7 @@ int main() {
 
         switch (choice) {
             case 1:
-                cout << "Loading Bills..." << endl;
+
                 showBillingMenu();
                 choice2 = getChoice();
                 switch(choice2){
