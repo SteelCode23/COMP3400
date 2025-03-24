@@ -2,6 +2,7 @@
 #include "batch.h"
 #include "Bill.h"
 #include "BillCalendar.h"
+#include "InputHelper.h"
 #include <iostream>
 
 using namespace std;
@@ -10,24 +11,23 @@ int main() {
     BatchService batchService;
     Bill bill;
     BillCalendar bc;
-    BillCalendar  openbillcalendar = bc.getCurrentBillCalendar();
+    BillCalendar openbillcalendar = bc.getCurrentBillCalendar();
+
     int choice;
     int choice2;
     Rate r;
-    int choice6;    
+    int choice6;
+
     do {
         showMenu();
-        choice = getChoice();
+        choice = getIntInput("Enter your choice: ");
 
         switch (choice) {
             case 1:
-
                 showBillingMenu();
-                choice2 = getChoice();
+                choice2 = getIntInput("Enter billing option: ");
                 switch(choice2){
-
                     case 1:
-                        
                         batchService.BillingBatch(openbillcalendar.billCalendarID);
                         cout << "Billing Batches Completed";
                         break;
@@ -37,34 +37,31 @@ int main() {
                         break;
                     case 3:
                         bill.updateBill();   
-                        break;                
-
-                    case 4:
-                        int billID;
-                        cout << "Enter Bill ID"<< endl;
-                        cin >> billID;
+                        break;
+                    case 4: {
+                        int billID = getIntInput("Enter Bill ID: ");
                         bill.readAndDisplayBillById(billID);                    
                         break;
+                    }
                     case 5:
                         bill.listOverdueBills();
-                       break;
+                        break;
                     case 6:
                         bc.createBillCalendar();
                         break;
                     case 7:
                         bc.displayCalendar();
-                       break;
+                        break;
                     case 8:
                         bc.updateBillCalendar();
-                       break;
+                        break;
                     case 9:
-                       break;
-
+                        break;
                 }
                 break;
             case 2:
                 showCustomerMenu();
-                choice2 = getChoice();
+                choice2 = getIntInput("Enter customer option: ");
                 batchService.loadCustomers("../data/customers.txt");
                 break;
             case 3:
@@ -80,22 +77,19 @@ int main() {
             case 5:
                 showServiceMenu();
                 break;
-
-
             case 6:
                 showRatesMenu();
-
-                choice6 = getChoice();
+                choice6 = getIntInput("Enter rate option: ");
                 switch(choice6){
-                case 1:
-                    r.createRate();
-                    break;
-                case 2:
-                    r.displayRates();
-                    break;
-                case 3:
-                    r.updateRate();
-                break;
+                    case 1:
+                        r.createRate();
+                        break;
+                    case 2:
+                        r.displayRates();
+                        break;
+                    case 3:
+                        r.updateRate();
+                        break;
                     default:
                         break;
                 }
@@ -106,7 +100,7 @@ int main() {
                 break;
             case 8:
                 cout << "Exiting..." << endl;
-                break;                
+                break;
             default:
                 cout << "\033[1;31mInvalid choice! Try again." << endl;
         }

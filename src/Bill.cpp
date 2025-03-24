@@ -4,10 +4,13 @@
 #include <sstream>
 #include <vector>
 #include <fstream>
+#include <iomanip>
 #include "Date.h"
+#include "InputHelper.h"
 
 using namespace std;
 using namespace std::chrono;
+
 Bill::Bill() : test(0), billId(0), customerId(0), providerId(0), serviceId(0),
                billCalendarID(0), billAmount(0.0), amountPaid(0.0),
                paidInFull(false), overdue(false) {}
@@ -101,7 +104,6 @@ void Bill::saveBills(const string &filename, const vector<Bill>& bills, bool ove
     }
 }
 
-
 Bill Bill::readBillById(int billId) {
     vector<Bill> bills = loadBills("data/bills.txt");
     for (auto& bill : bills) {
@@ -113,9 +115,7 @@ Bill Bill::readBillById(int billId) {
 }
 
 void Bill::updateBill() {
-    cout << "Enter the Bill to update: ";
-    int billId;
-    cin >> billId;
+    int billId = getIntInput("Enter the Bill to update: ");
     cin.ignore();
     Bill bill;
     try {
@@ -131,54 +131,40 @@ void Bill::updateBill() {
          << "3. Bill Amount\n"
          << "4. Amount Paid\n"
          << "5. Paid in Full\n"
-         << "6. Due Date\n"
-         << "Enter choice (1-6): ";
+         << "6. Due Date\n";
 
-    int choice;
-    cin >> choice;
+    int choice = getIntInput("Enter choice (1-6): ");
     cin.ignore(); 
     vector<Bill> bills = loadBills("data/bills.txt");
 
     switch (choice) {
         case 1: {
-            cout << "Enter new Provider ID: ";
-            int newId;
-            cin >> newId;
+            int newId = getIntInput("Enter new Provider ID: ");
             bill.setProviderId(newId);
             break;
         }
         case 2: {
-            cout << "Enter new Service ID: ";
-            int newId;
-            cin >> newId;
+            int newId = getIntInput("Enter new Service ID: ");
             bill.setServiceId(newId);
             break;
         }
         case 3: {
-            cout << "Enter new Bill Amount: ";
-            double newAmount;
-            cin >> newAmount;
+            double newAmount = getDoubleInput("Enter new Bill Amount: ");
             bill.setBillAmount(newAmount);
             break;
         }
         case 4: {
-            cout << "Enter new Amount Paid: ";
-            double newAmount;
-            cin >> newAmount;
+            double newAmount = getDoubleInput("Enter new Amount Paid: ");
             bill.setAmountPaid(newAmount);
             break;
         }
         case 5: {
-            cout << "Enter Paid in Full: ";
-            int status;
-            cin >> status;
+            int status = getIntInput("Enter Paid in Full (0 or 1): ");
             bill.setPaidInFull(status == 1);
             break;
         }
         case 6: {
-            cout << "Enter new Due Date (YYYY-MM-DD): ";
-            string dateStr;
-            getline(cin, dateStr);
+            string dateStr = getLineInput("Enter new Due Date (YYYY-MM-DD): ");
             Date d;
             bill.setDueDate(d.parseDate(dateStr));
             break;
@@ -187,12 +173,14 @@ void Bill::updateBill() {
             cout << "Invalid choice. No changes made." << endl;
             return; 
     }
+
     for (auto& b : bills) {
         if (b.getBillId() == billId) {
             b = bill; 
             break;
         }
     }
+
     try {
         saveBills("data/bills.txt", bills, true);
         cout << "Bill updated successfully!\n";
@@ -241,16 +229,11 @@ void Bill::listOverdueBills() {
 
 bool Bill::isOverdue(Date currentDate) {
     if (!getIsPaid()) {
-        if (currentDate.year > static_cast<int>(getDueDate().year())) {
-            return true;
-        } else if (currentDate.year == static_cast<int>(getDueDate().year())) {
-            if (currentDate.month > unsigned(getDueDate().month())) {
-                return true;
-            } else if (currentDate.month == unsigned(getDueDate().month())) {
-                if (currentDate.day > unsigned(getDueDate().day())) {
-                    return true;
-                }
-            }
+        if (currentDate.year > static_cast<int>(getDueDate().year())) return true;
+        if (currentDate.year == static_cast<int>(getDueDate().year())) {
+            if (currentDate.month > unsigned(getDueDate().month())) return true;
+            if (currentDate.month == unsigned(getDueDate().month()) &&
+                currentDate.day > unsigned(getDueDate().day())) return true;
         }
     }
     return false;
