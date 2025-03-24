@@ -31,28 +31,34 @@ void Rate::setFixedRateAmount(double amount) { fixedRateAmount = amount; }
 void Rate::setUnitOfMeasure(string uom) { unitOfMeasure = uom; }
 void Rate::setMeasuredUsage(int usage) { MeasuredUsage = usage; }
 
-vector<Rate> Rate::loadRates(const string& filename){
+vector<Rate> Rate::loadRates(const string& filename) {
     vector<Rate> rates;
-    ifstream file(filename);
-    string line;
-    getline(file, line); 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Rate r;
-        getline(ss, token, ','); r.rateId = stoi(token);
-        getline(ss, token, ','); r.serviceId = stoi(token);
-        getline(ss, token, ','); r.providerId = stoi(token);
-        getline(ss, token, ','); r.rateName = token;
-        getline(ss, token, ','); r.variableRateAmount = stod(token);
-        getline(ss, token, ','); r.fixedRateAmount = stod(token);
-        getline(ss, token, ','); r.unitOfMeasure = token;
-        getline(ss, token, ','); r.MeasuredUsage = stoi(token);
-        rates.push_back(r);
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            Rate r;
+            getline(ss, token, ','); r.rateId = stoi(token);
+            getline(ss, token, ','); r.serviceId = stoi(token);
+            getline(ss, token, ','); r.providerId = stoi(token);
+            getline(ss, token, ','); r.rateName = token;
+            getline(ss, token, ','); r.variableRateAmount = stod(token);
+            getline(ss, token, ','); r.fixedRateAmount = stod(token);
+            getline(ss, token, ','); r.unitOfMeasure = token;
+            getline(ss, token, ','); r.MeasuredUsage = stoi(token);
+            rates.push_back(r);
+        }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in loadRates: " << e.what() << endl;
     }
-    file.close();
     return rates;
 }
+
 
 
 void Rate::createRate(){

@@ -46,73 +46,61 @@ void Bill::setOverdue(bool status) { overdue = status; }
 
 vector<Bill> Bill::loadBills(const string& filename) {
     vector<Bill> bills;
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Error: Could not open file '" << filename << "'\n";
-        throw runtime_error("Unable to open file: " + filename);
-    }    
-    string line;
-
-    getline(file, line); 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Bill b;
-        getline(ss, token, ',');
-        b.setBillId(stoi(token));
-        getline(ss, token, ',');
-        b.setCustomerId(stoi(token));
-        getline(ss, token, ',');
-        b.setProviderId(stoi(token));
-        getline(ss, token, ',');
-        b.setServiceId(stoi(token));
-        getline(ss, token, ',');
-        b.setBillCalendarID(stoi(token));
-        getline(ss, token, ',');
-        b.setBillAmount(stod(token));
-        getline(ss, token, ',');
-        b.setAmountPaid(stod(token));            
-        getline(ss, token, ',');
-        b.setPaidInFull(stoi(token));
-        getline(ss, token, ',');
-        Date d;
-        b.setBillDate(d.parseDate(token));
-        getline(ss, token, ',');
-        b.setDueDate(d.parseDate(token));
-        getline(ss, token, ',');
-        b.setOverdue(stoi(token));
-        bills.push_back(b);
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            Bill b;
+            getline(ss, token, ','); b.billId = stoi(token);
+            getline(ss, token, ','); b.customerId = stoi(token);
+            getline(ss, token, ','); b.providerId = stoi(token);
+            getline(ss, token, ','); b.serviceId = stoi(token);
+            getline(ss, token, ','); b.billCalendarID = stoi(token);
+            getline(ss, token, ','); b.billAmount = stod(token);
+            getline(ss, token, ','); b.amountPaid = stod(token);
+            getline(ss, token, ','); b.paidInFull = stoi(token);
+            Date d;
+            getline(ss, token, ','); b.billDate = (d.parseDate(token));
+            getline(ss, token, ','); b.dueDate = (d.parseDate(token));
+            getline(ss, token, ','); b.overdue = stoi(token);
+            bills.push_back(b);
+        }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in loadBills: " << e.what() << endl;
     }
-    file.close();
     return bills;
 }
 
-void Bill::saveBills(const string& filename, const vector<Bill>& bills, bool overwrite) {
-    if (overwrite) {
-        ofstream file(filename, ios::trunc);
-        file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
-        for (auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
-                 << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
-                 << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
-                 << bill.getOverdue();
+void Bill::saveBills(const string &filename, const vector<Bill>& bills, bool overwrite) {
+    try {
+        ofstream file;
+        if (overwrite) file.open(filename, ios::trunc);
+        else file.open(filename, ios::app);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+
+        if (overwrite) {
+            file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
         }
-        file.close();              
-    } else {
-        ofstream file(filename, ios::app);
-        for (auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
-                 << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
-                 << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
-                 << bill.getOverdue();
+
+        for (const auto &bill : bills) {
+            file << "\n" << bill.billId << "," << bill.customerId << "," << bill.providerId << "," << bill.serviceId << ","
+                 << bill.billCalendarID << "," << bill.billAmount << "," << bill.amountPaid << "," << bill.paidInFull << ","
+                 << int(bill.billDate.year()) << "-" << unsigned(bill.billDate.month()) << "-" << unsigned(bill.billDate.day()) << ","
+                 << int(bill.dueDate.year()) << "-" << unsigned(bill.dueDate.month()) << "-" << unsigned(bill.dueDate.day()) << ","
+                 << bill.overdue;
         }
+
         file.close();
+    } catch (const exception& e) {
+        cerr << "Error in saveBills: " << e.what() << endl;
     }
 }
+
 
 Bill Bill::readBillById(int billId) {
     vector<Bill> bills = loadBills("data/bills.txt");
