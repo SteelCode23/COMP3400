@@ -18,7 +18,7 @@ public:
     int getBillingID(const std::string& filename);
     std::vector<Customer> loadCustomers(const std::string& filename);
     std::vector<Usage> loadUsage(const std::string& filename, int BillCalendarID);
-    std::vector<Rate> loadRates(const std::string& filename);
+    //std::vector<Rate> loadRates(const std::string& filename);
 
     void BillingBatch(int BillCalendarID);
     void SimulatePayments(int BillCalendarID);
