@@ -3,16 +3,15 @@
 
 #include <string>
 #include <chrono>
+#include <vector>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include "Date.h"
 
-using namespace std;
-using namespace std::chrono;
-
 class Bill {
-    
-
-public:
+private:
+    int test;
     int billId;
     int customerId;
     int providerId;
@@ -21,13 +20,18 @@ public:
     double billAmount;
     double amountPaid;
     bool paidInFull;
-    year_month_day billDate;
-    year_month_day dueDate;
+    std::chrono::year_month_day billDate;
+    std::chrono::year_month_day dueDate;
     bool overdue;
+
+public:
     Bill();
     Bill(int bid, int cid, int pid, int sid, int bcid, double amount,
-         double paid, bool status, year_month_day bdate, year_month_day ddate);
+         double paid, bool status, std::chrono::year_month_day bdate,
+         std::chrono::year_month_day ddate);
 
+    // Getters (no const)
+    int getTest();
     int getBillId();
     int getCustomerId();
     int getProviderId();
@@ -36,10 +40,12 @@ public:
     double getBillAmount();
     double getAmountPaid();
     bool getIsPaid();
-    year_month_day getBillDate();
-    year_month_day getDueDate();
+    std::chrono::year_month_day getBillDate();
+    std::chrono::year_month_day getDueDate();
     bool getOverdue();
 
+    // Setters
+    void setTest(int newTest);
     void setBillId(int id);
     void setCustomerId(int id);
     void setProviderId(int id);
@@ -48,11 +54,19 @@ public:
     void setBillAmount(double amount);
     void setAmountPaid(double amount);
     void setPaidInFull(bool status);
-    void setBillDate(year_month_day date);
-    void setDueDate(year_month_day date);
+    void setBillDate(std::chrono::year_month_day date);
+    void setDueDate(std::chrono::year_month_day date);
     void setOverdue(bool status);
 
+    // Other methods
+    std::vector<Bill> loadBills(const std::string& filename);
+    Bill readBillById(int billId);
     void displayBill();
+    void readAndDisplayBillById(int billId);
+    void saveBills(const std::string& filename, const std::vector<Bill>& bills, bool overwrite);
+    void updateBill();
+    void listOverdueBills();
+    void updateBillCalendar();
     bool isOverdue(Date currentDate);
 };
 

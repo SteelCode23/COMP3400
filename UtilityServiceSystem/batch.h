@@ -10,28 +10,24 @@
 #include "Rate.h"
 #include "Usage.h"
 
-using namespace std;
-using namespace std::chrono;
-
 class BatchService {
 public:
     BatchService();
 
-    int getPaymentID(const string& filename);
-    int getBillingID(const string& filename);
-    year_month_day parseDate(const string& dateStr);
-
-    vector<Bill> loadBills(const string& filename);
-    vector<Customer> loadCustomers(const string& filename);
-    vector<Usage> loadUsage(const string& filename, int BillCalendarID);
-    vector<Rate> loadRates(const string& filename);
+    int getPaymentID(const std::string& filename);
+    int getBillingID(const std::string& filename);
+    std::vector<Customer> loadCustomers(const std::string& filename);
+    std::vector<Usage> loadUsage(const std::string& filename, int BillCalendarID);
+    std::vector<Rate> loadRates(const std::string& filename);
 
     void BillingBatch(int BillCalendarID);
     void SimulatePayments(int BillCalendarID);
     void CalculateOverdue();
 
-    void saveBills(const string &filename, const vector<Bill> bills, bool overwrite);
-    void postPayments(const string &filename, const vector<Payments> payments, bool overwrite);
+    void saveBills(const std::string& filename, const std::vector<Bill>& bills, bool overwrite);
+    void postPayments(const string& filename, const vector<Payments>& payments, bool overwrite);
+
+
 };
 
 #endif
