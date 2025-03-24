@@ -30,7 +30,7 @@ public:
          double paid, bool status, std::chrono::year_month_day bdate,
          std::chrono::year_month_day ddate);
 
-    // Getters (no const)
+    
     int getTest();
     int getBillId();
     int getCustomerId();
@@ -44,7 +44,7 @@ public:
     std::chrono::year_month_day getDueDate();
     bool getOverdue();
 
-    // Setters
+    
     void setTest(int newTest);
     void setBillId(int id);
     void setCustomerId(int id);
@@ -58,7 +58,7 @@ public:
     void setDueDate(std::chrono::year_month_day date);
     void setOverdue(bool status);
 
-    // Other methods
+    
     std::vector<Bill> loadBills(const std::string& filename);
     Bill readBillById(int billId);
     void displayBill();

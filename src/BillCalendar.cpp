@@ -8,7 +8,7 @@
 
 using namespace std;
 
-// Constructors
+
 BillCalendar::BillCalendar() : billCalendarID(0), openClosed(false) {}
 
 BillCalendar::BillCalendar(int id, year_month_day start, year_month_day end, bool open)
@@ -31,8 +31,8 @@ vector<BillCalendar> BillCalendar::readAllBillCalendars() {
         try {
             Date d;
             getline(ss, token, ','); bc.billCalendarID = stoi(token);
-            getline(ss, token, ','); bc.startDate = d.parseDate(token); // Non-static, called on instance
-            getline(ss, token, ','); bc.endDate = d.parseDate(token);   // Non-static, called on instance
+            getline(ss, token, ','); bc.startDate = d.parseDate(token); 
+            getline(ss, token, ','); bc.endDate = d.parseDate(token);   
             getline(ss, token, ','); bc.openClosed = stoi(token);
             calendars.push_back(bc);
         } catch (const exception& e) {

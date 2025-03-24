@@ -14,4 +14,4 @@ public:
     void display() const;
 };
 
-#endif // DATE_H
+#endif 

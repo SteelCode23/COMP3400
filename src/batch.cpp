@@ -24,7 +24,7 @@ int BatchService::getPaymentID(const string& filename) {
     Payments p;
     ifstream file(filename);
     string line;
-    getline(file, line); // Skip headers
+    getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
         string token;
@@ -44,7 +44,7 @@ int BatchService::getBillingID(const string& filename) {
     Bill b;
     ifstream file(filename);
     string line;
-    getline(file, line); // Skip headers
+    getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
         string token;
@@ -63,7 +63,7 @@ vector<Customer> BatchService::loadCustomers(const string& filename) {
     vector<Customer> customers;
     ifstream file(filename);
     string line;
-    getline(file, line); // Skip header
+    getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
         string token;
@@ -82,7 +82,7 @@ vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID
     vector<Usage> usageData;
     ifstream file(filename);
     string line;
-    getline(file, line); // Skip header
+    getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
         string token;

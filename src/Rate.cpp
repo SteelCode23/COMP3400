@@ -35,7 +35,7 @@ vector<Rate> Rate::loadRates(const string& filename){
     vector<Rate> rates;
     ifstream file(filename);
     string line;
-    getline(file, line); // Skip header
+    getline(file, line); 
     while (getline(file, line)) {
         stringstream ss(line);
         string token;
@@ -76,7 +76,7 @@ void Rate::createRate(){
     cin >> providerId;
     newRate.setProviderId(providerId);
 
-    cin.ignore(); // Clear newline from previous input
+    cin.ignore(); 
     cout << "Enter Rate Name (string): ";
     string rateName;
     getline(cin, rateName);
@@ -92,7 +92,7 @@ void Rate::createRate(){
     cin >> fixRate;
     newRate.setFixedRateAmount(fixRate);
 
-    cin.ignore(); // Clear newline
+    cin.ignore(); 
     cout << "Enter Unit of Measure (string): ";
     string unitOfMeasure;
     getline(cin, unitOfMeasure);

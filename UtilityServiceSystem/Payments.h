@@ -10,4 +10,4 @@ public:
     double paymentAmount;
 };
 
-#endif // PAYMENTS_H
+#endif 

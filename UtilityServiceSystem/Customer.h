@@ -36,4 +36,4 @@ public:
     void makePayment(int billID);
 };
 
-#endif // CUSTOMER_H
+#endif 

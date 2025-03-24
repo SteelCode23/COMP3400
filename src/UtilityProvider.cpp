@@ -17,7 +17,7 @@ class UtilityProvider {
             name = n;
         }
 
-        // Getters and Setters
+        
         int getProviderID() { return providerID; }
         string getName() { return name; }
         void setProviderID(int id) { providerID = id; }
