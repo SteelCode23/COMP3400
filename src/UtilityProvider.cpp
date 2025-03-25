@@ -14,6 +14,7 @@ class UtilityProvider {
         vector<UtilityService*> services;
 
     public:
+        UtilityProvider();
         UtilityProvider(int id, string n) {
             providerID = id;
             name = n;

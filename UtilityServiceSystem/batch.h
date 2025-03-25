@@ -20,8 +20,8 @@ public:
     std::vector<Usage> loadUsage(const std::string& filename, int BillCalendarID);
     
 
-    void BillingBatch(int BillCalendarID);
-    void SimulatePayments(int BillCalendarID);
+    void BillingBatch();
+    void SimulatePayments();
     void CalculateOverdue();
 
     void saveBills(const std::string& filename, const std::vector<Bill>& bills, bool overwrite);

@@ -3,9 +3,9 @@
 
 #include <string>
 #include <vector>
+class  Rate {
 
-class Rate {
-public:
+    private:
     int rateId;
     int serviceId;
     int providerId;
@@ -14,19 +14,33 @@ public:
     double fixedRateAmount;
     std::string unitOfMeasure;
     int MeasuredUsage;
-
+    
+    public:
     Rate();
-
+    Rate(int rId, int sId, int pId, std::string rName, double varRate, double fixRate, std::string uom, int mUsage);
+    Rate getRates();
+    int getRateId();
+    int getServiceId();
+    int getProviderId();
+    std::string getRateName();
+    double getVariableRateAmount();
+    double getFixedRateAmount();
+    std::string getUnitOfMeasure();
+    int getMeasuredUsage();
+    void setRateId(int id);
+    void setServiceId(int id);
+    void setProviderId(int id);
+    void setRateName(std::string name);
+    void setVariableRateAmount(double amount);
+    void setFixedRateAmount(double amount);
+    void setUnitOfMeasure(std::string uom);
+    void setMeasuredUsage(int usage);
     void createRate();
-    void displayRates();
+    Rate readRateById(int rateId);
     void updateRate();
-
-    int getServiceId() const;
-    int getProviderId() const;
-    double getFixedRateAmount() const;
-    double getVariableRateAmount() const;
-
-    static std::vector<Rate> loadRates(const std::string& filename);
+    std::vector<Rate> loadRates(const std::string& filename);
+    void saveRates(const std::string& filename, std::vector<Rate>& rates, bool overwrite);
+    void displayRates();
 };
 
 #endif

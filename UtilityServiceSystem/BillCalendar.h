@@ -4,24 +4,28 @@
 #include <string>
 #include <chrono>
 #include <vector>
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 using namespace std::chrono;
 
 class BillCalendar {
 public:
-    int billCalendarID;
-    year_month_day startDate;
-    year_month_day endDate;
-    bool openClosed;
 
     BillCalendar();
     BillCalendar(int id, year_month_day start, year_month_day end, bool open);
 
-    int getBillCalendarID();
+    void setBillCalendarID(int id);
+    void setStartDate(year_month_day start);
+    void setEndDate(year_month_day end);
+    void setOpenClosed(bool open);
+    int getBillCalendarID(); 
     year_month_day getStartDate();
     year_month_day getEndDate();
-    bool isOpen();
+    bool isOpen(); 
+
+
 
     bool createBillCalendar();
     vector<BillCalendar> readAllBillCalendars();
@@ -32,6 +36,11 @@ public:
 
 private:
     void saveCalendars(const string& filename, const vector<BillCalendar>& calendars);
+    int billCalendarID;
+    std::chrono::year_month_day startDate;
+    std::chrono::year_month_day endDate;
+    bool openClosed; 
+
 };
 
 #endif
