@@ -36,7 +36,6 @@ public:
     void setFixedMeterRate(double rate) { fixedMeterRate = rate; }
     void setUsageRate(double rate) { usageRate = rate; }
 
-    // New Methods
     static vector<UtilityService*> loadServices(const string& filename) {
         vector<UtilityService*> services;
         ifstream file(filename);
