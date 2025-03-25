@@ -31,11 +31,11 @@ int main() {
                 switch(choice2){
                     case 1:
                         batchService.BillingBatch(openbillcalendar.billCalendarID);
-                        cout << "Billing Batches Completed";
+                        cout << "\033[1;32mBilling Batches Completed";
                         break;
                     case 2:
                         batchService.CalculateOverdue();
-                        cout << "Overdue Bills calculated";
+                        cout << "\033[1;32mOverdue Bills calculated";
                         break;
                     case 3:
                         bill.updateBill();   
@@ -70,13 +70,13 @@ int main() {
             case 3:
                 clearScreen();
                 showUsageMenu();
-                cout << "Processing Payments..." << endl;
+                cout << "\033[1;32mProcessing Payments..." << endl;
                 batchService.postPayments("../data/payments.txt", {}, false);
                 break;
             case 4:
                 clearScreen();
                 showProviderMenu();
-                cout << "Generating Billing Batch..." << endl;
+                cout << "\033[1;32mGenerating Billing Batch..." << endl;
                 batchService.BillingBatch(1);
                 break;
             case 5:
@@ -107,14 +107,17 @@ int main() {
                 cout << "Exiting..." << endl;
                 break;
             case 8:
+                bill.generateManagementReport(); 
+                break;
+            case 9:
                 cout << "Exiting..." << endl;
                 break;
             default:
                 cout << "\033[1;31mInvalid choice! Try again." << endl;
         }
-
+        if(choice != 9) 
         waitForKeyPress();
-    } while (choice != 8);
+    } while (choice != 9);
 
     return 0;
 }

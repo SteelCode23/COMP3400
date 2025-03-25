@@ -11,7 +11,7 @@ void clearScreen() {
 void showMenu() {
     clearScreen();
     cout << "\033[1;32m=============================" << endl;
-    cout << "\033[1;34m       Utility Service Provider" << endl;
+    cout << "\033[1;34m  Utility Service Provider" << endl;
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;33m1. Billing" << endl;
     cout << "2. Manage Customers" << endl;
@@ -20,7 +20,8 @@ void showMenu() {
     cout << "5. Manage Services" << endl;
     cout << "6. Manage Rates" << endl;
     cout << "7. Payments" << endl;
-    cout << "8. Exit" << endl;
+    cout << "8. Management Report" << endl;
+    cout << "9. Exit" << endl;
     cout << "\033[1;32m=============================" << endl;
 }
 

@@ -4,8 +4,6 @@
 #include <string>
 #include <chrono>
 #include <vector>
-#include <fstream>
-#include <sstream>
 
 using namespace std;
 using namespace std::chrono;
@@ -15,16 +13,15 @@ public:
     int billCalendarID;
     year_month_day startDate;
     year_month_day endDate;
-    bool openClosed; 
+    bool openClosed;
 
     BillCalendar();
     BillCalendar(int id, year_month_day start, year_month_day end, bool open);
 
-    int getBillCalendarID() { return billCalendarID; }
-    year_month_day getStartDate() { return startDate; }
-    year_month_day getEndDate() { return endDate; }
-    bool isOpen() { return openClosed; }
-
+    int getBillCalendarID();
+    year_month_day getStartDate();
+    year_month_day getEndDate();
+    bool isOpen();
 
     bool createBillCalendar();
     vector<BillCalendar> readAllBillCalendars();

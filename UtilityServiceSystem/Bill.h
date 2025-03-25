@@ -68,6 +68,7 @@ public:
     void listOverdueBills();
     void updateBillCalendar();
     bool isOverdue(Date currentDate);
+    void generateManagementReport();
 };
 
 #endif
