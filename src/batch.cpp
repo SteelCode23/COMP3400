@@ -20,83 +20,100 @@ BatchService::BatchService() {}
 
 int BatchService::getPaymentID(const string& filename) {
     int nextPaymentID = 1;
-    int testPaymentID;
-    Payments p;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip headers
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        getline(ss, token, ',');
-        testPaymentID = stoi(token);
-        if (testPaymentID > nextPaymentID) {
-            nextPaymentID = testPaymentID;
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            getline(ss, token, ',');
+            int testPaymentID = stoi(token);
+            if (testPaymentID > nextPaymentID) {
+                nextPaymentID = testPaymentID;
+            }
         }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in getPaymentID: " << e.what() << endl;
     }
-    file.close();
     return nextPaymentID;
 }
 
+
 int BatchService::getBillingID(const string& filename) {
     int nextBillingID = 1;
-    int testBillingID;
-    Bill b;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip headers
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        getline(ss, token, ',');
-        testBillingID = stoi(token);
-        if (testBillingID > nextBillingID) {
-            nextBillingID = testBillingID;
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            getline(ss, token, ',');
+            int testBillingID = stoi(token);
+            if (testBillingID > nextBillingID) {
+                nextBillingID = testBillingID;
+            }
         }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in getBillingID: " << e.what() << endl;
     }
-    file.close();
     return nextBillingID;
 }
 
 
+
 vector<Customer> BatchService::loadCustomers(const string& filename) {
     vector<Customer> customers;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip header
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Customer c;
-        getline(ss, token, ',');
-        c.customerID = stoi(token);
-        getline(ss, token, ',');
-        c.name = token;
-        customers.push_back(c);
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            Customer c;
+            getline(ss, token, ',');
+            c.customerID = stoi(token);
+            getline(ss, token, ',');
+            c.name = token;
+            customers.push_back(c);
+        }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in loadCustomers: " << e.what() << endl;
     }
-    file.close();
     return customers;
 }
 
+
 vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID) {
     vector<Usage> usageData;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip header
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Usage u;
-        getline(ss, token, ','); u.customerId = stoi(token);
-        getline(ss, token, ','); u.providerId = stoi(token);
-        getline(ss, token, ','); u.serviceId = stoi(token);
-        getline(ss, token, ','); u.billCalendarId = stoi(token);
-        getline(ss, token, ','); u.usageAmount = stoi(token);
-        if (u.billCalendarId == BillCalendarID) {
-            usageData.push_back(u);
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            Usage u;
+            getline(ss, token, ','); u.customerId = stoi(token);
+            getline(ss, token, ','); u.providerId = stoi(token);
+            getline(ss, token, ','); u.serviceId = stoi(token);
+            getline(ss, token, ','); u.billCalendarId = stoi(token);
+            getline(ss, token, ','); u.usageAmount = stoi(token);
+            if (u.billCalendarId == BillCalendarID) usageData.push_back(u);
         }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in loadUsage: " << e.what() << endl;
     }
-    file.close();
     return usageData;
 }
 
@@ -163,39 +180,47 @@ void BatchService::BillingBatch(int BillCalendarID) {
     saveBills("data/bills.txt", bills, false);
 }
 
-void BatchService::saveBills(const string& filename, const vector<Bill>& bills, bool overwrite) {
-    if (overwrite) {
-        ofstream file(filename, ios::trunc);
-        file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
+void BatchService::saveBills(const string &filename, const vector<Bill>& bills, bool overwrite) {
+    try {
+        ofstream file;
+        if (overwrite) file.open(filename, ios::trunc);
+        else file.open(filename, ios::app);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+
+        if (overwrite) {
+            file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
+        }
+
         for (auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
+            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << "," << bill.getServiceId() << ","
+                 << bill.getBillCalendarID() << "," << bill.getBillAmount() << "," << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
                  << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
                  << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
                  << bill.getOverdue();
         }
+
         file.close();
-    } else {
-        ofstream file(filename, ios::app);
-        for ( auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
-                 << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
-                 << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
-                 << bill.getOverdue();
+    } catch (const exception& e) {
+        cerr << "Error in saveBills: " << e.what() << endl;
+    }
+}
+
+
+void BatchService::postPayments(const string &filename, const vector<Payments>& payments, bool overwrite) {
+    try {
+        ofstream file;
+        if (overwrite) file.open(filename, ios::trunc);
+        else file.open(filename, ios::app);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        for (const auto& payment : payments) {
+            file << "\n" << payment.paymentId << "," << payment.billId << "," << payment.paymentAmount;
         }
         file.close();
+    } catch (const exception& e) {
+        cerr << "Error in postPayments: " << e.what() << endl;
     }
 }
-void BatchService::postPayments(const string& filename, const vector<Payments>& payments, bool overwrite) {
-    ofstream file(filename, ios::app);
-    for (auto payment : payments) {
-        file << "\n" << payment.paymentId << "," << payment.billId << "," << payment.paymentAmount;
-    }
-    file.close();
-}
+
 
 
 void BatchService::SimulatePayments(int BillCalendarID) {

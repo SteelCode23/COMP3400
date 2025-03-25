@@ -4,10 +4,14 @@
 #include <sstream>
 #include <vector>
 #include <fstream>
+#include <iomanip>
+#include <map>
 #include "Date.h"
+#include "InputHelper.h"
 
 using namespace std;
 using namespace std::chrono;
+
 Bill::Bill() : test(0), billId(0), customerId(0), providerId(0), serviceId(0),
                billCalendarID(0), billAmount(0.0), amountPaid(0.0),
                paidInFull(false), overdue(false) {}
@@ -46,71 +50,58 @@ void Bill::setOverdue(bool status) { overdue = status; }
 
 vector<Bill> Bill::loadBills(const string& filename) {
     vector<Bill> bills;
-    ifstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Error: Could not open file '" << filename << "'\n";
-        throw runtime_error("Unable to open file: " + filename);
-    }    
-    string line;
-
-    getline(file, line); 
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Bill b;
-        getline(ss, token, ',');
-        b.setBillId(stoi(token));
-        getline(ss, token, ',');
-        b.setCustomerId(stoi(token));
-        getline(ss, token, ',');
-        b.setProviderId(stoi(token));
-        getline(ss, token, ',');
-        b.setServiceId(stoi(token));
-        getline(ss, token, ',');
-        b.setBillCalendarID(stoi(token));
-        getline(ss, token, ',');
-        b.setBillAmount(stod(token));
-        getline(ss, token, ',');
-        b.setAmountPaid(stod(token));            
-        getline(ss, token, ',');
-        b.setPaidInFull(stoi(token));
-        getline(ss, token, ',');
-        Date d;
-        b.setBillDate(d.parseDate(token));
-        getline(ss, token, ',');
-        b.setDueDate(d.parseDate(token));
-        getline(ss, token, ',');
-        b.setOverdue(stoi(token));
-        bills.push_back(b);
+    try {
+        ifstream file(filename);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+        string line;
+        getline(file, line);
+        while (getline(file, line)) {
+            stringstream ss(line);
+            string token;
+            Bill b;
+            getline(ss, token, ','); b.billId = stoi(token);
+            getline(ss, token, ','); b.customerId = stoi(token);
+            getline(ss, token, ','); b.providerId = stoi(token);
+            getline(ss, token, ','); b.serviceId = stoi(token);
+            getline(ss, token, ','); b.billCalendarID = stoi(token);
+            getline(ss, token, ','); b.billAmount = stod(token);
+            getline(ss, token, ','); b.amountPaid = stod(token);
+            getline(ss, token, ','); b.paidInFull = stoi(token);
+            Date d;
+            getline(ss, token, ','); b.billDate = (d.parseDate(token));
+            getline(ss, token, ','); b.dueDate = (d.parseDate(token));
+            getline(ss, token, ','); b.overdue = stoi(token);
+            bills.push_back(b);
+        }
+        file.close();
+    } catch (const exception& e) {
+        cerr << "Error in loadBills: " << e.what() << endl;
     }
-    file.close();
     return bills;
 }
 
-void Bill::saveBills(const string& filename, const vector<Bill>& bills, bool overwrite) {
-    if (overwrite) {
-        ofstream file(filename, ios::trunc);
-        file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
-        for (auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
-                 << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
-                 << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
-                 << bill.getOverdue();
+void Bill::saveBills(const string &filename, const vector<Bill>& bills, bool overwrite) {
+    try {
+        ofstream file;
+        if (overwrite) file.open(filename, ios::trunc);
+        else file.open(filename, ios::app);
+        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
+
+        if (overwrite) {
+            file << "BillID,CustomerID,ProviderID,ServiceID,BillCalendarID,BillAmount,AmountPaid,Status,BillDate,DueDate,Overdue";
         }
-        file.close();              
-    } else {
-        ofstream file(filename, ios::app);
-        for (auto bill : bills) {
-            file << "\n" << bill.getBillId() << "," << bill.getCustomerId() << "," << bill.getProviderId() << ","
-                 << bill.getServiceId() << "," << bill.getBillCalendarID() << "," << bill.getBillAmount() << ","
-                 << bill.getAmountPaid() << "," << bill.getIsPaid() << ","
-                 << int(bill.getBillDate().year()) << "-" << unsigned(bill.getBillDate().month()) << "-" << unsigned(bill.getBillDate().day()) << ","
-                 << int(bill.getDueDate().year()) << "-" << unsigned(bill.getDueDate().month()) << "-" << unsigned(bill.getDueDate().day()) << ","
-                 << bill.getOverdue();
+
+        for (const auto &bill : bills) {
+            file << "\n" << bill.billId << "," << bill.customerId << "," << bill.providerId << "," << bill.serviceId << ","
+                 << bill.billCalendarID << "," << bill.billAmount << "," << bill.amountPaid << "," << bill.paidInFull << ","
+                 << int(bill.billDate.year()) << "-" << unsigned(bill.billDate.month()) << "-" << unsigned(bill.billDate.day()) << ","
+                 << int(bill.dueDate.year()) << "-" << unsigned(bill.dueDate.month()) << "-" << unsigned(bill.dueDate.day()) << ","
+                 << bill.overdue;
         }
+
         file.close();
+    } catch (const exception& e) {
+        cerr << "Error in saveBills: " << e.what() << endl;
     }
 }
 
@@ -125,9 +116,7 @@ Bill Bill::readBillById(int billId) {
 }
 
 void Bill::updateBill() {
-    cout << "Enter the Bill to update: ";
-    int billId;
-    cin >> billId;
+    int billId = getIntInput("Enter the Bill to update: ");
     cin.ignore();
     Bill bill;
     try {
@@ -143,54 +132,40 @@ void Bill::updateBill() {
          << "3. Bill Amount\n"
          << "4. Amount Paid\n"
          << "5. Paid in Full\n"
-         << "6. Due Date\n"
-         << "Enter choice (1-6): ";
+         << "6. Due Date\n";
 
-    int choice;
-    cin >> choice;
+    int choice = getIntInput("Enter choice (1-6): ");
     cin.ignore(); 
     vector<Bill> bills = loadBills("data/bills.txt");
 
     switch (choice) {
         case 1: {
-            cout << "Enter new Provider ID: ";
-            int newId;
-            cin >> newId;
+            int newId = getIntInput("Enter new Provider ID: ");
             bill.setProviderId(newId);
             break;
         }
         case 2: {
-            cout << "Enter new Service ID: ";
-            int newId;
-            cin >> newId;
+            int newId = getIntInput("Enter new Service ID: ");
             bill.setServiceId(newId);
             break;
         }
         case 3: {
-            cout << "Enter new Bill Amount: ";
-            double newAmount;
-            cin >> newAmount;
+            double newAmount = getDoubleInput("Enter new Bill Amount: ");
             bill.setBillAmount(newAmount);
             break;
         }
         case 4: {
-            cout << "Enter new Amount Paid: ";
-            double newAmount;
-            cin >> newAmount;
+            double newAmount = getDoubleInput("Enter new Amount Paid: ");
             bill.setAmountPaid(newAmount);
             break;
         }
         case 5: {
-            cout << "Enter Paid in Full: ";
-            int status;
-            cin >> status;
+            int status = getIntInput("Enter Paid in Full (0 or 1): ");
             bill.setPaidInFull(status == 1);
             break;
         }
         case 6: {
-            cout << "Enter new Due Date (YYYY-MM-DD): ";
-            string dateStr;
-            getline(cin, dateStr);
+            string dateStr = getLineInput("Enter new Due Date (YYYY-MM-DD): ");
             Date d;
             bill.setDueDate(d.parseDate(dateStr));
             break;
@@ -199,12 +174,14 @@ void Bill::updateBill() {
             cout << "Invalid choice. No changes made." << endl;
             return; 
     }
+
     for (auto& b : bills) {
         if (b.getBillId() == billId) {
             b = bill; 
             break;
         }
     }
+
     try {
         saveBills("data/bills.txt", bills, true);
         cout << "Bill updated successfully!\n";
@@ -214,7 +191,7 @@ void Bill::updateBill() {
 }
 
 void Bill::displayBill() {
-    cout << getTest() << endl;
+    //cout << getTest() << endl; antique code
     cout << "Bill ID: " << getBillId() << endl << " Customer ID: " << getCustomerId()
          << endl << " Provider ID: " << getProviderId() << endl << " Service ID: " << getServiceId()
          << endl << " Calendar ID: " << getBillCalendarID() 
@@ -253,17 +230,71 @@ void Bill::listOverdueBills() {
 
 bool Bill::isOverdue(Date currentDate) {
     if (!getIsPaid()) {
-        if (currentDate.year > static_cast<int>(getDueDate().year())) {
-            return true;
-        } else if (currentDate.year == static_cast<int>(getDueDate().year())) {
-            if (currentDate.month > unsigned(getDueDate().month())) {
-                return true;
-            } else if (currentDate.month == unsigned(getDueDate().month())) {
-                if (currentDate.day > unsigned(getDueDate().day())) {
-                    return true;
-                }
-            }
+        if (currentDate.year > static_cast<int>(getDueDate().year())) return true;
+        if (currentDate.year == static_cast<int>(getDueDate().year())) {
+            if (currentDate.month > unsigned(getDueDate().month())) return true;
+            if (currentDate.month == unsigned(getDueDate().month()) &&
+                currentDate.day > unsigned(getDueDate().day())) return true;
         }
     }
     return false;
 }
+
+void Bill::generateManagementReport() {
+    vector<Bill> bills = loadBills("data/bills.txt");
+
+    map<pair<int, int>, pair<double, double>> reportTotals;
+
+    for (const auto& bill : bills) {
+        auto key = make_pair(bill.providerId, bill.serviceId);
+        reportTotals[key].first += bill.billAmount;
+        reportTotals[key].second += bill.amountPaid;
+    }
+
+   cout << "\033[1;34m" << left << setw(15) << "Provider ID"
+         << "\033[1;32m" << setw(15) << "Service ID"
+         << "\033[1;33m" << setw(20) << "Total Bill Amount"
+         << "\033[1;36m" << setw(20) << "Total Amount Paid" << "\033[0m" << endl;
+    cout << "\033[1;37m" << string(70, '-') << "\033[0m" << endl;
+
+
+    for (const auto& [key, totals] : reportTotals) {
+
+    string colorProvider = "\033[1;34m";
+    string colorService  = "\033[1;32m";
+    string colorBill     = "\033[1;33m";
+    string colorPaid     = "\033[1;36m";
+
+    cout << colorProvider << left << setw(15) << key.first
+         << colorService  << setw(15) << key.second
+         << colorBill     << "$" << setw(19) << fixed << setprecision(2) << totals.first
+         << colorPaid     << "$" << setw(19) << fixed << setprecision(2) << totals.second
+         << "\033[0m" << endl;
+    }
+    try {
+    ofstream out("report.txt", ios::trunc);
+    if (!out.is_open()) throw runtime_error("Failed to open report.txt for writing.");
+
+    out << left << setw(15) << "Provider ID"
+        << setw(15) << "Service ID"
+        << setw(20) << "Total Bill Amount"
+        << setw(20) << "Total Amount Paid" << endl;
+    out << string(70, '-') << endl;
+
+    for (const auto& [key, totals] : reportTotals) {
+        out << left << setw(15) << key.first
+            << setw(15) << key.second
+            << "$" << setw(19) << fixed << setprecision(2) << totals.first
+            << "$" << setw(19) << fixed << setprecision(2) << totals.second
+            << endl;
+    }
+
+    out.close();
+    cout << "\n\033[1;32mReport written to report.txt\n";
+} catch (const exception& e) {
+    cerr << "Error writing report.txt: " << e.what() << endl;
+}
+
+
+}
+

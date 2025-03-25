@@ -7,7 +7,7 @@
 
 using namespace std;
 
-// Abstract base class
+
 class UtilityService {
 protected:
     string serviceType;
@@ -26,7 +26,7 @@ public:
     virtual double calculateCost(double usage) = 0;
     virtual ~UtilityService() {}
 
-    // Getters and Setters
+    
     string getServiceType() { return serviceType; }
     int getProviderID() { return providerID; }
     double getFixedMeterRate() { return fixedMeterRate; }

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-// Abstract base class
+
 class UtilityService {
 protected:
     string serviceType;
@@ -25,7 +25,7 @@ public:
     virtual double calculateCost(double usage) = 0;
     virtual ~UtilityService() {}
 
-    // Getters and Setters
+    
     string getServiceType() { return serviceType; }
     int getProviderID() { return providerID; }
     double getFixedMeterRate() { return fixedMeterRate; }
@@ -233,7 +233,7 @@ public:
 
         for (auto& s : services) {
             if (stoi(to_string(reinterpret_cast<uintptr_t>(s))) == serviceId) {
-                delete s; // Delete old pointer
+                delete s;
                 s = service;
                 break;
             }
@@ -289,5 +289,9 @@ class HydroService : public UtilityService {
         }
         void setSubType(string type) { subType = type; }
         string getSubType() { return subType; }
-        double calculateCost(double usage) override { return fixedMeterRate + (usage * usageRate); }
+    
+        double calculateCost(double usage) override {
+            return fixedMeterRate + (usage * usageRate);
+        }
 };
+

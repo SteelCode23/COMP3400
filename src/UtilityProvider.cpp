@@ -19,7 +19,7 @@ class UtilityProvider {
             name = n;
         }
 
-        // Existing Getters and Setters
+
         int getProviderID() { return providerID; }
         string getName() { return name; }
         void setProviderID(int id) { providerID = id; }
@@ -35,11 +35,12 @@ class UtilityProvider {
             }
         }
 
+
         static vector<UtilityProvider> loadProviders(const string& filename) {
             vector<UtilityProvider> providers;
             ifstream file(filename);
             string line;
-            getline(file, line); // Skip header
+            getline(file, line);
             while (getline(file, line)) {
                 stringstream ss(line);
                 string token;
@@ -166,3 +167,4 @@ class UtilityProvider {
             }
         }
 };
+

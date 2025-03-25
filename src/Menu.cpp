@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+#include "InputHelper.h"
 
 using namespace std;
 
@@ -10,7 +11,7 @@ void clearScreen() {
 void showMenu() {
     clearScreen();
     cout << "\033[1;32m=============================" << endl;
-    cout << "\033[1;34m       Utility Service Provider" << endl;
+    cout << "\033[1;34m  Utility Service Provider" << endl;
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;33m1. Billing" << endl;
     cout << "2. Manage Customers" << endl;
@@ -19,9 +20,9 @@ void showMenu() {
     cout << "5. Manage Services" << endl;
     cout << "6. Manage Rates" << endl;
     cout << "7. Payments" << endl;
-    cout << "8. Exit" << endl;
+    cout << "8. Management Report" << endl;
+    cout << "9. Exit" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: ";
 }
 
 void showBillingMenu() {
@@ -29,7 +30,7 @@ void showBillingMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Billing Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Run Billing Batches" << endl;
     cout << "2. Calculate Overdue Invoices" << endl;
     cout << "3. Manually Update Bill" << endl;
@@ -46,7 +47,7 @@ void showCustomerMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Customer Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Customer" << endl;
     cout << "2. Search Customer" << endl;
     cout << "3. Update Customer" << endl;
@@ -58,7 +59,7 @@ void showUsageMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Usage Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Usage" << endl;
     cout << "2. Search Usage" << endl;
     cout << "3. Update Usage" << endl;
@@ -70,7 +71,7 @@ void showProviderMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Provider Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Provider" << endl;
     cout << "2. Search Provider" << endl;
     cout << "3. Update Provider" << endl;
@@ -82,11 +83,11 @@ void showServiceMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Services Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Service" << endl;
     cout << "2. List all Services" << endl;
     cout << "3. Update Service" << endl;
-    cout << "4. Back" << endl;    
+    cout << "4. Back" << endl;
 }
 
 void showRatesMenu() {
@@ -94,31 +95,30 @@ void showRatesMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Rates Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Rate" << endl;
     cout << "2. List all Rates" << endl;
     cout << "3. Update Rate" << endl;
-    cout << "4. Back" << endl;    
+    cout << "4. Back" << endl;
 }
+
 void showPaymentsMenu() {
     clearScreen();
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;34m       Utility Service Provider Payment Management" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: "<< endl;
+    cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Run Payments Batch" << endl;
     cout << "2. Manually Post Payment" << endl;
-    cout << "3. Back" << endl;  
+    cout << "3. Back" << endl;
 }
 
 int getChoice() {
-    int choice;
-    cin >> choice;
-    return choice;
+    return getIntInput("");
 }
 
 void waitForKeyPress() {
     cout << "\nPress Enter to continue...";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 }
