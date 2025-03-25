@@ -78,27 +78,27 @@ vector<Customer> BatchService::loadCustomers(const string& filename) {
     return customers;
 }
 
-vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID) {
-    vector<Usage> usageData;
-    ifstream file(filename);
-    string line;
-    getline(file, line); // Skip header
-    while (getline(file, line)) {
-        stringstream ss(line);
-        string token;
-        Usage u;
-        getline(ss, token, ','); u.customerId = stoi(token);
-        getline(ss, token, ','); u.providerId = stoi(token);
-        getline(ss, token, ','); u.serviceId = stoi(token);
-        getline(ss, token, ','); u.billCalendarId = stoi(token);
-        getline(ss, token, ','); u.usageAmount = stoi(token);
-        if (u.billCalendarId == BillCalendarID) {
-            usageData.push_back(u);
-        }
-    }
-    file.close();
-    return usageData;
-}
+// vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID) {
+//     vector<Usage> usageData;
+//     ifstream file(filename);
+//     string line;
+//     getline(file, line); // Skip header
+//     while (getline(file, line)) {
+//         stringstream ss(line);
+//         string token;
+//         Usage u;
+//         getline(ss, token, ','); u.customerId = stoi(token);
+//         getline(ss, token, ','); u.providerId = stoi(token);
+//         getline(ss, token, ','); u.serviceId = stoi(token);
+//         getline(ss, token, ','); u.billCalendarId = stoi(token);
+//         getline(ss, token, ','); u.usageAmount = stoi(token);
+//         if (u.billCalendarId == BillCalendarID) {
+//             usageData.push_back(u);
+//         }
+//     }
+//     file.close();
+//     return usageData;
+// }
 
 // vector<Rate> BatchService::loadRates(const string& filename) {
 //     vector<Rate> rates;
@@ -126,16 +126,17 @@ vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID
 void BatchService::BillingBatch(int BillCalendarID) {
     vector<Bill> bills;
     Rate rateObj;
+    Usage u;
     vector<Customer> customers = loadCustomers("data/customers.txt");
     vector<Rate> rates = rateObj.loadRates("data/rates.txt");
-    vector<Usage> usageRecords = loadUsage("data/usage.txt", BillCalendarID);
+    vector<Usage> usageRecords = u.loadUsage("data/usage.txt", BillCalendarID);
     int nextBillingID = getBillingID("data/bills.txt");
 
-    for (const auto& usage : usageRecords) {
-        if (usage.billCalendarId == BillCalendarID) {
+    for ( auto& usage : usageRecords) {
+        if (usage.getBillCalendarId() == BillCalendarID) {
             float variableRate = 0.0, fixedRate = 0.0;
             for ( auto& r : rates) {
-                if (r.getProviderId() == usage.providerId && r.getServiceId() == usage.serviceId) {
+                if (r.getProviderId() == usage.getProviderId()  && r.getServiceId() == usage.getServiceId()) {
                     variableRate = r.getVariableRateAmount();
                     fixedRate = r.getFixedRateAmount();
                     break;
@@ -144,11 +145,11 @@ void BatchService::BillingBatch(int BillCalendarID) {
 
             Bill newBill;
             newBill.setBillId(nextBillingID++);
-            newBill.setCustomerId(usage.customerId);
-            newBill.setProviderId(usage.providerId);
+            newBill.setCustomerId(usage.getCustomerId());
+            newBill.setProviderId(usage.getProviderId());
             newBill.setBillCalendarID(BillCalendarID);
-            newBill.setServiceId(usage.serviceId);
-            newBill.setBillAmount((usage.usageAmount * variableRate) + fixedRate);
+            newBill.setServiceId(usage.getServiceId() );
+            newBill.setBillAmount((usage.getUsageAmount() * variableRate) + fixedRate);
             newBill.setAmountPaid(0.0);
             newBill.setPaidInFull(false);
             chrono::sys_days today = floor<days>(system_clock::now());

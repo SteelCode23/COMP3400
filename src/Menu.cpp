@@ -14,12 +14,11 @@ void showMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;33m1. Billing" << endl;
     cout << "2. Manage Customers" << endl;
-    cout << "3. Usage" << endl;
-    cout << "4. Manage Provide" << endl;
-    cout << "5. Manage Services" << endl;
-    cout << "6. Manage Rates" << endl;
-    cout << "7. Payments" << endl;
-    cout << "8. Exit" << endl;
+    cout << "3. Manage Providers" << endl;
+    cout << "4. Manage Services" << endl;
+    cout << "5. Manage Rates" << endl;
+    cout << "6. Management Reports" << endl;
+    cout << "7. Exit" << endl;
     cout << "\033[1;32m=============================" << endl;
     cout << "Enter your choice: ";
 }
@@ -38,7 +37,9 @@ void showBillingMenu() {
     cout << "6. Add BillCalendar" << endl;
     cout << "7. View BillCalendar" << endl;
     cout << "8. Update BillCalendar Status" << endl;
-    cout << "9. Back" << endl;
+    cout << "9. Simulate Usage" << endl;
+    cout << "10. Simulate Payments" << endl;
+    cout << "11. Back" << endl;
 }
 
 void showCustomerMenu() {

@@ -2,6 +2,7 @@
 #include "batch.h"
 #include "Bill.h"
 #include "BillCalendar.h"
+#include "Usage.h"
 #include <iostream>
 
 using namespace std;
@@ -9,6 +10,7 @@ using namespace std;
 int main() {
     BatchService batchService;
     Bill bill;
+    Usage u;
     BillCalendar bc;
     BillCalendar  openbillcalendar = bc.getCurrentBillCalendar();
     int choice;
@@ -58,7 +60,12 @@ int main() {
                         bc.updateBillCalendar();
                        break;
                     case 9:
+                        u.simulateUsage(openbillcalendar.billCalendarID);
                        break;
+                    case 10:
+                        batchService.SimulatePayments(openbillcalendar.billCalendarID);
+                        break;
+
 
                 }
                 break;
@@ -68,21 +75,16 @@ int main() {
                 batchService.loadCustomers("../data/customers.txt");
                 break;
             case 3:
-                showUsageMenu();
-                cout << "Processing Payments..." << endl;
-                batchService.postPayments("../data/payments.txt", {}, false);
-                break;
-            case 4:
                 showProviderMenu();
                 cout << "Generating Billing Batch..." << endl;
                 batchService.BillingBatch(1);
                 break;
-            case 5:
+            case 4:
                 showServiceMenu();
                 break;
 
 
-            case 6:
+            case 5:
                 showRatesMenu();
 
                 choice6 = getChoice();
@@ -100,19 +102,16 @@ int main() {
                         break;
                 }
                 break;
-            case 7:
-                showPaymentsMenu();
+            case 6:
                 cout << "Exiting..." << endl;
-                break;
-            case 8:
-                cout << "Exiting..." << endl;
-                break;                
+                break;  
+
             default:
                 cout << "\033[1;31mInvalid choice! Try again." << endl;
         }
 
         waitForKeyPress();
-    } while (choice != 8);
+    } while (choice != 9);
 
     return 0;
 }
