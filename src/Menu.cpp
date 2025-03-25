@@ -22,7 +22,6 @@ void showMenu() {
     cout << "7. Payments" << endl;
     cout << "8. Exit" << endl;
     cout << "\033[1;32m=============================" << endl;
-    cout << "Enter your choice: ";
 }
 
 void showBillingMenu() {
@@ -119,6 +118,6 @@ int getChoice() {
 
 void waitForKeyPress() {
     cout << "\nPress Enter to continue...";
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 }

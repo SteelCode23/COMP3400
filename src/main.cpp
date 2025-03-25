@@ -13,6 +13,7 @@ int main() {
     BillCalendar bc;
     BillCalendar openbillcalendar = bc.getCurrentBillCalendar();
 
+    clearScreen();
     int choice;
     int choice2;
     Rate r;
@@ -24,6 +25,7 @@ int main() {
 
         switch (choice) {
             case 1:
+                clearScreen();
                 showBillingMenu();
                 choice2 = getIntInput("Enter billing option: ");
                 switch(choice2){
@@ -60,24 +62,29 @@ int main() {
                 }
                 break;
             case 2:
+                clearScreen();
                 showCustomerMenu();
                 choice2 = getIntInput("Enter customer option: ");
                 batchService.loadCustomers("../data/customers.txt");
                 break;
             case 3:
+                clearScreen();
                 showUsageMenu();
                 cout << "Processing Payments..." << endl;
                 batchService.postPayments("../data/payments.txt", {}, false);
                 break;
             case 4:
+                clearScreen();
                 showProviderMenu();
                 cout << "Generating Billing Batch..." << endl;
                 batchService.BillingBatch(1);
                 break;
             case 5:
+                clearScreen();
                 showServiceMenu();
                 break;
             case 6:
+                clearScreen();
                 showRatesMenu();
                 choice6 = getIntInput("Enter rate option: ");
                 switch(choice6){
@@ -95,6 +102,7 @@ int main() {
                 }
                 break;
             case 7:
+                clearScreen();
                 showPaymentsMenu();
                 cout << "Exiting..." << endl;
                 break;

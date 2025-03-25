@@ -190,7 +190,7 @@ void Bill::updateBill() {
 }
 
 void Bill::displayBill() {
-    cout << getTest() << endl;
+    //cout << getTest() << endl; antique code
     cout << "Bill ID: " << getBillId() << endl << " Customer ID: " << getCustomerId()
          << endl << " Provider ID: " << getProviderId() << endl << " Service ID: " << getServiceId()
          << endl << " Calendar ID: " << getBillCalendarID() 
