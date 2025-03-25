@@ -4,7 +4,7 @@
 #include "BillCalendar.h"
 #include "InputHelper.h"
 #include <iostream>
-
+#include "Usage.h"
 using namespace std;
 
 int main() {
@@ -12,7 +12,7 @@ int main() {
     Bill bill;
     BillCalendar bc;
     BillCalendar openbillcalendar = bc.getCurrentBillCalendar();
-
+    Usage u;
     clearScreen();
     int choice;
     int choice2;
@@ -30,7 +30,7 @@ int main() {
                 choice2 = getIntInput("Enter billing option: ");
                 switch(choice2){
                     case 1:
-                        batchService.BillingBatch(openbillcalendar.billCalendarID);
+                        batchService.BillingBatch();
                         cout << "\033[1;32mBilling Batches Completed";
                         break;
                     case 2:
@@ -58,6 +58,10 @@ int main() {
                         bc.updateBillCalendar();
                         break;
                     case 9:
+                        u.simulateUsage();
+                       break;
+                    case 10:
+                        batchService.SimulatePayments();
                         break;
                 }
                 break;
@@ -77,7 +81,7 @@ int main() {
                 clearScreen();
                 showProviderMenu();
                 cout << "\033[1;32mGenerating Billing Batch..." << endl;
-                batchService.BillingBatch(1);
+
                 break;
             case 5:
                 clearScreen();

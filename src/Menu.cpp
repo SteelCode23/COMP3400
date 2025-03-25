@@ -39,7 +39,9 @@ void showBillingMenu() {
     cout << "6. Add BillCalendar" << endl;
     cout << "7. View BillCalendar" << endl;
     cout << "8. Update BillCalendar Status" << endl;
-    cout << "9. Back" << endl;
+    cout << "9. Simulate Usage" << endl;
+    cout << "10. Simulate Payments" << endl;
+    cout << "11. Back" << endl;
 }
 
 void showCustomerMenu() {
@@ -119,6 +121,6 @@ int getChoice() {
 
 void waitForKeyPress() {
     cout << "\nPress Enter to continue...";
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    //cin.ignore(numeric_limits<streamsize>::max(), '\n');
     cin.get();
 }

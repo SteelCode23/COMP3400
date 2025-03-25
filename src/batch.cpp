@@ -12,6 +12,7 @@
 #include "Payments.h"
 #include "Rate.h"
 #include "Usage.h"
+#include "BillCalendar.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -103,12 +104,12 @@ vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID
             stringstream ss(line);
             string token;
             Usage u;
-            getline(ss, token, ','); u.customerId = stoi(token);
-            getline(ss, token, ','); u.providerId = stoi(token);
-            getline(ss, token, ','); u.serviceId = stoi(token);
-            getline(ss, token, ','); u.billCalendarId = stoi(token);
-            getline(ss, token, ','); u.usageAmount = stoi(token);
-            if (u.billCalendarId == BillCalendarID) usageData.push_back(u);
+            getline(ss, token, ','); u.setCustomerId(stoi(token)) ;
+            getline(ss, token, ','); u.setProviderId(stoi(token));
+            getline(ss, token, ','); u.setServiceId(stoi(token));
+            getline(ss, token, ','); u.setBillCalendarId(stoi(token));
+            getline(ss, token, ','); u.setUsageAmount(stoi(token));
+            if (u.getBillCalendarId() == BillCalendarID) usageData.push_back(u);
         }
         file.close();
     } catch (const exception& e) {
@@ -140,19 +141,21 @@ vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID
 //     return rates;
 // }
 
-void BatchService::BillingBatch(int BillCalendarID) {
+void BatchService::BillingBatch() {
     vector<Bill> bills;
     Rate rateObj;
+    BillCalendar bc;
+    int currentBillCalendar = bc.getCurrentBillCalendar().getBillCalendarID();
     vector<Customer> customers = loadCustomers("data/customers.txt");
     vector<Rate> rates = rateObj.loadRates("data/rates.txt");
-    vector<Usage> usageRecords = loadUsage("data/usage.txt", BillCalendarID);
+    vector<Usage> usageRecords = loadUsage("data/usage.txt", currentBillCalendar);
     int nextBillingID = getBillingID("data/bills.txt");
 
-    for (const auto& usage : usageRecords) {
-        if (usage.billCalendarId == BillCalendarID) {
+    for (auto& usage : usageRecords) {
+        if (usage.getBillCalendarId() == currentBillCalendar) {
             float variableRate = 0.0, fixedRate = 0.0;
             for ( auto& r : rates) {
-                if (r.getProviderId() == usage.providerId && r.getServiceId() == usage.serviceId) {
+                if (r.getProviderId() == usage.getProviderId() && r.getServiceId() == usage.getServiceId()) {
                     variableRate = r.getVariableRateAmount();
                     fixedRate = r.getFixedRateAmount();
                     break;
@@ -161,11 +164,11 @@ void BatchService::BillingBatch(int BillCalendarID) {
 
             Bill newBill;
             newBill.setBillId(nextBillingID++);
-            newBill.setCustomerId(usage.customerId);
-            newBill.setProviderId(usage.providerId);
-            newBill.setBillCalendarID(BillCalendarID);
-            newBill.setServiceId(usage.serviceId);
-            newBill.setBillAmount((usage.usageAmount * variableRate) + fixedRate);
+            newBill.setCustomerId(usage.getCustomerId());
+            newBill.setProviderId(usage.getProviderId());
+            newBill.setBillCalendarID(currentBillCalendar);
+            newBill.setServiceId(usage. getServiceId());
+            newBill.setBillAmount((usage.getUsageAmount() * variableRate) + fixedRate);
             newBill.setAmountPaid(0.0);
             newBill.setPaidInFull(false);
             chrono::sys_days today = floor<days>(system_clock::now());
@@ -223,11 +226,11 @@ void BatchService::postPayments(const string &filename, const vector<Payments>& 
 
 
 
-void BatchService::SimulatePayments(int BillCalendarID) {
+void BatchService::SimulatePayments() {
     Bill billObj;
     vector<Bill> bills = billObj.loadBills("data/bills.txt");
     vector<Payments> payments;
-
+    BillCalendar bc;
     random_device rd;
     mt19937 gen(rd());
     uniform_int_distribution<int> dist(1, 100);
@@ -237,9 +240,9 @@ void BatchService::SimulatePayments(int BillCalendarID) {
     int paymentId = getPaymentID("data/payments.txt");
     sys_days todaySys = floor<days>(system_clock::now());
     year_month_day today = year_month_day{todaySys};
-
+    int currentBillCalendar = bc.getCurrentBillCalendar().getBillCalendarID();
     for (auto& bill : bills) {
-        if (bill.getBillCalendarID() == BillCalendarID) {
+        if (bill.getBillCalendarID() == currentBillCalendar) {
             bool simulatedPayment = dis(gen) < 0.95;
             if (simulatedPayment) {
                 paymentAmount = bill.getBillAmount();
