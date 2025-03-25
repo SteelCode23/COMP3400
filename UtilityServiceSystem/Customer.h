@@ -30,10 +30,17 @@ public:
     void setAddress(const std::string& address);
     void setEmail(const std::string& email);
     void setPhoneNumber(const std::string& phoneNumber);
+    void setCustomerID(int id);
     void subscribeService(UtilityService* service);
     void addBill(Bill* bill);
     void viewBills() const;
     void makePayment(int billID);
+    static std::vector<Customer> loadCustomers(const std::string& filename);
+    void createCustomer();
+    static void saveCustomers(const std::string& filename, std::vector<Customer>& customers, bool overwrite);
+    static Customer readCustomerById(int customerId);
+    void updateCustomer();
+    static void displayCustomers();
 };
 
 #endif // CUSTOMER_H
