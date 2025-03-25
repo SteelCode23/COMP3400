@@ -36,6 +36,13 @@ public:
     void setProviderID(int pid) { providerID = pid; }
     void setFixedMeterRate(double rate) { fixedMeterRate = rate; }
     void setUsageRate(double rate) { usageRate = rate; }
+
+    static vector<UtilityService*> loadServices(const string& filename);
+    static void createService();
+    static void saveServices(const string& filename, vector<UtilityService*>& services, bool overwrite);
+    static UtilityService* readServiceById(int serviceId);
+    void updateService(int serviceId);
+    static void displayServices();
 };
 
 class NaturalGas : public UtilityService {
