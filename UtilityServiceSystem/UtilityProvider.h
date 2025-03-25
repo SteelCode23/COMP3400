@@ -29,6 +29,13 @@ public:
 
     void addService(UtilityService* service);
     void displayServices() const;
+
+    static vector<UtilityProvider> loadProviders(const string& filename);
+    void createProvider();
+    static void saveProviders(const string& filename, vector<UtilityProvider>& providers, bool overwrite);
+    static UtilityProvider readProviderById(int providerId);
+    void updateProvider();
+    static void displayProviders();
 };
 
 #endif
