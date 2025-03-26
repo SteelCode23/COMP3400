@@ -5,19 +5,22 @@
 #include "InputHelper.h"
 #include <iostream>
 #include "Usage.h"
+#include "UtilityProvider.h"
+#include "UtilityService.h"
 using namespace std;
 
 int main() {
     BatchService batchService;
     Bill bill;
     BillCalendar bc;
+    UtilityService us;
+    UtilityProvider up;
+    Customer c;
     BillCalendar openbillcalendar = bc.getCurrentBillCalendar();
     Usage u;
     clearScreen();
-    int choice;
-    int choice2;
+    int choice,choice2,choice3,choice4,choice5,choice6;
     Rate r;
-    int choice6;
 
     do {
         showMenu();
@@ -69,29 +72,61 @@ int main() {
                 clearScreen();
                 showCustomerMenu();
                 choice2 = getIntInput("Enter customer option: ");
-                batchService.loadCustomers("../data/customers.txt");
+                switch(choice2){
+                case 1:
+                    c.createCustomer();
+                    break;
+                case 2:
+                    c.updateCustomer();
+                    break;
+                case 3:
+                    c.displayCustomers();
+                    break;
+                default:
+                    break;
+                }
                 break;
             case 3:
                 clearScreen();
-                showUsageMenu();
-                cout << "\033[1;32mProcessing Payments..." << endl;
-                batchService.postPayments("../data/payments.txt", {}, false);
+                showProviderMenu();
+                choice3 = getIntInput("Enter provider option: ");
+                switch(choice3){
+                case 1:
+                    up.createProvider();
+                    break;
+                case 2:
+                    up.updateProvider();
+                    break;
+                case 3:
+                    up.displayProviders();
+                    break;
+                default:
+                    break;
+                }
                 break;
             case 4:
                 clearScreen();
-                showProviderMenu();
-                cout << "\033[1;32mGenerating Billing Batch..." << endl;
-
+                showServiceMenu();
+                choice4 = getIntInput("Enter customer option: ");
+                switch(choice4){
+                case 1:
+                    us.createService();
+                    break;
+                case 2:
+                    us.updateService();
+                    break;
+                case 3:
+                    us.displayServices();
+                    break;
+                default:
+                    break;
+                }
                 break;
             case 5:
                 clearScreen();
-                showServiceMenu();
-                break;
-            case 6:
-                clearScreen();
                 showRatesMenu();
-                choice6 = getIntInput("Enter rate option: ");
-                switch(choice6){
+                choice5 = getIntInput("Enter rate option: ");
+                switch(choice5){
                     case 1:
                         r.createRate();
                         break;
@@ -105,15 +140,11 @@ int main() {
                         break;
                 }
                 break;
-            case 7:
+            case 6:
                 clearScreen();
-                showPaymentsMenu();
-                cout << "Exiting..." << endl;
-                break;
-            case 8:
                 bill.generateManagementReport(); 
                 break;
-            case 9:
+            case 7:
                 cout << "Exiting..." << endl;
                 break;
             default:

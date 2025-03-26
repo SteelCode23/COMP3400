@@ -1,41 +1,27 @@
-// #ifndef UTILITYPROVIDER_H
-// #define UTILITYPROVIDER_H
+#ifndef UTILITY_PROVIDER_H
+#define UTILITY_PROVIDER_H
 
-// #include <string>
-// #include <vector>
-// #include "UtilityService.h"
+#include <string>
+#include <vector>
 
-// class UtilityProvider {
-// private:
-//     int providerID;
-//     std::string providerName;
-//     std::string serviceType;
-//     double ratePerUnit;
-//     std::vector<UtilityService*> services;
+class UtilityProvider {
+private:
+    int providerId;
+    std::string providerName;
 
-// public:
+public:
+    UtilityProvider();
+    UtilityProvider(int pId, std::string name);
+    int getProviderId();
+    std::string getProviderName();
+    void setProviderId(int id);
+    void setProviderName(std::string name);
+    void createProvider();
+    UtilityProvider readProviderById(int providerId);
+    void updateProvider();
+    std::vector<UtilityProvider> loadProviders(const std::string& filename);
+    void saveProviders(const std::string& filename, std::vector<UtilityProvider>& providers, bool overwrite);
+    void displayProviders();
+};
 
-//     UtilityProvider(int id, const std::string& name, const std::string& type, double rate);
-
-//     int getProviderID() const;
-//     std::string getProviderName() const;
-//     std::string getServiceType() const;
-//     double getRatePerUnit() const;
-
-//     void setProviderID(int id);
-//     void setProviderName(const std::string& name);
-//     void setServiceType(const std::string& type);
-//     void setRatePerUnit(double rate);
-
-//     void addService(UtilityService* service);
-//     void displayServices() const;
-
-//     static vector<UtilityProvider> loadProviders(const string& filename);
-//     void createProvider();
-//     static void saveProviders(const string& filename, vector<UtilityProvider>& providers, bool overwrite);
-//     static UtilityProvider readProviderById(int providerId);
-//     void updateProvider();
-//     static void displayProviders();
-// };
-
-// #endif
+#endif
