@@ -7,6 +7,8 @@
 #include "Usage.h"
 #include "UtilityProvider.h"
 #include "UtilityService.h"
+#include "Subscription.h"
+
 using namespace std;
 
 int main() {
@@ -16,6 +18,7 @@ int main() {
     UtilityService us;
     UtilityProvider up;
     Customer c;
+    Subscription s;
     BillCalendar openbillcalendar = bc.getCurrentBillCalendar();
     Usage u;
     clearScreen();
@@ -82,6 +85,15 @@ int main() {
                 case 3:
                     c.displayCustomers();
                     break;
+                case 4:
+                    s.createSubscription();
+                    break;
+                case 5:
+                    s.updateSubscription();
+                    break;
+                case 6:
+                    s.displaySubscriptions();
+                    break;                                        
                 default:
                     break;
                 }

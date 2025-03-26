@@ -242,59 +242,56 @@ bool Bill::isOverdue(Date currentDate) {
 
 void Bill::generateManagementReport() {
     vector<Bill> bills = loadBills("data/bills.txt");
-
     map<pair<int, int>, pair<double, double>> reportTotals;
-
-    for (const auto& bill : bills) {
-        auto key = make_pair(bill.providerId, bill.serviceId);
-        reportTotals[key].first += bill.billAmount;
-        reportTotals[key].second += bill.amountPaid;
+    for (auto& bill : bills) {
+        auto key = make_pair(bill.getProviderId(), bill.getServiceId());
+        reportTotals[key].first += bill.getBillAmount();
+        reportTotals[key].second += bill.getAmountPaid();
     }
 
-   cout << "\033[1;34m" << left << setw(15) << "Provider ID"
+    cout << "\033[1;34m" << left << setw(15) << "Provider ID"
          << "\033[1;32m" << setw(15) << "Service ID"
          << "\033[1;33m" << setw(20) << "Total Bill Amount"
-         << "\033[1;36m" << setw(20) << "Total Amount Paid" << "\033[0m" << endl;
+         << "\033[1;36m" << setw(20) << "Total Amount Paid"
+         << "\033[0m" << endl;
     cout << "\033[1;37m" << string(70, '-') << "\033[0m" << endl;
 
+    for (auto& [key, totals] : reportTotals) {
+        ostringstream providerField, serviceField, billField, paidField;
+        providerField << left << setw(15) << key.first;
+        serviceField << left << setw(15) << key.second;
+        billField << "$" << fixed << setprecision(2) << setw(19) << totals.first;
+        paidField << "$" << fixed << setprecision(2) << setw(19) << totals.second;
+        cout << "\033[1;34m" << providerField.str()
+             << "\033[1;32m" << serviceField.str()
+             << "\033[1;33m" << billField.str()
+             << "\033[1;36m" << paidField.str()
+             << "\033[0m" << endl;
 
-    for (const auto& [key, totals] : reportTotals) {
-
-    string colorProvider = "\033[1;34m";
-    string colorService  = "\033[1;32m";
-    string colorBill     = "\033[1;33m";
-    string colorPaid     = "\033[1;36m";
-
-    cout << colorProvider << left << setw(15) << key.first
-         << colorService  << setw(15) << key.second
-         << colorBill     << "$" << setw(19) << fixed << setprecision(2) << totals.first
-         << colorPaid     << "$" << setw(19) << fixed << setprecision(2) << totals.second
-         << "\033[0m" << endl;
+        cout.unsetf(ios::fixed);
+        cout.precision(6); 
     }
+
+
     try {
-    ofstream out("report.txt", ios::trunc);
-    if (!out.is_open()) throw runtime_error("Failed to open report.txt for writing.");
+        ofstream out("report.txt", ios::trunc);
+        if (!out.is_open()) throw runtime_error("Failed to open report.txt for writing.");
+        out << left << setw(15) << "Provider ID"
+            << setw(15) << "Service ID"
+            << setw(20) << "Total Bill Amount"
+            << setw(20) << "Total Amount Paid" << endl;
+        out << string(70, '-') << endl;
+        for (const auto& [key, totals] : reportTotals) {
+            out << left << setw(15) << key.first
+                << setw(15) << key.second
+                << "$" << fixed << setprecision(2) << setw(19) << totals.first
+                << "$" << fixed << setprecision(2) << setw(19) << totals.second
+                << endl;
+        }
 
-    out << left << setw(15) << "Provider ID"
-        << setw(15) << "Service ID"
-        << setw(20) << "Total Bill Amount"
-        << setw(20) << "Total Amount Paid" << endl;
-    out << string(70, '-') << endl;
-
-    for (const auto& [key, totals] : reportTotals) {
-        out << left << setw(15) << key.first
-            << setw(15) << key.second
-            << "$" << setw(19) << fixed << setprecision(2) << totals.first
-            << "$" << setw(19) << fixed << setprecision(2) << totals.second
-            << endl;
+        out.close();
+        cout << "\n\033[1;32mReport written to report.txt\033[0m\n";
+    } catch (const exception& e) {
+        cerr << "Error writing report.txt: " << e.what() << endl;
     }
-
-    out.close();
-    cout << "\n\033[1;32mReport written to report.txt\n";
-} catch (const exception& e) {
-    cerr << "Error writing report.txt: " << e.what() << endl;
 }
-
-
-}
-
