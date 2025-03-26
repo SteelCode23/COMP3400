@@ -165,7 +165,7 @@ void Bill::updateBill() {
             break;
         }
         case 6: {
-            string dateStr = getLineInput("Enter new Due Date (YYYY-MM-DD): ");
+            string dateStr = getValidatedDate("Enter new Due Date (YYYY-MM-DD): ");
             Date d;
             bill.setDueDate(d.parseDate(dateStr));
             break;
