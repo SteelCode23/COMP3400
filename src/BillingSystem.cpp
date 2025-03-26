@@ -9,12 +9,12 @@
 using namespace std;
 
 class BillingSystem {
-    vector<UtilityProvider> providers;
+ //   vector<UtilityProvider> providers;
     vector<Customer> customers;
     vector<Bill> bills;
 
 public:
-    void addProvider(UtilityProvider provider) { providers.push_back(provider); }
+ //   void addProvider(UtilityProvider provider) { providers.push_back(provider); }
     void addCustomer(Customer customer) { customers.push_back(customer); }
     void generateBill(Bill bill) { bills.push_back(bill); }
 

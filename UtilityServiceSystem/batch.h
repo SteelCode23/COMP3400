@@ -25,7 +25,7 @@ public:
     void CalculateOverdue();
 
     void saveBills(const std::string& filename, const std::vector<Bill>& bills, bool overwrite);
-    void postPayments(const string& filename, const vector<Payments>& payments, bool overwrite);
+    void postPayments(const std::string& filename, const std::vector<Payments>& payments, bool overwrite);
 
 
 };

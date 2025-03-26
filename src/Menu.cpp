@@ -15,13 +15,11 @@ void showMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "\033[1;33m1. Billing" << endl;
     cout << "2. Manage Customers" << endl;
-    cout << "3. Usage" << endl;
-    cout << "4. Manage Provide" << endl;
-    cout << "5. Manage Services" << endl;
-    cout << "6. Manage Rates" << endl;
-    cout << "7. Payments" << endl;
-    cout << "8. Management Report" << endl;
-    cout << "9. Exit" << endl;
+    cout << "3. Manage Provide" << endl;
+    cout << "4. Manage Services" << endl;
+    cout << "5. Manage Rates" << endl;
+    cout << "6. Management Report" << endl;
+    cout << "7. Exit" << endl;
     cout << "\033[1;32m=============================" << endl;
 }
 
@@ -51,8 +49,8 @@ void showCustomerMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Customer" << endl;
-    cout << "2. Search Customer" << endl;
-    cout << "3. Update Customer" << endl;
+    cout << "2. Update Customer" << endl;
+    cout << "3. Display Customers" << endl;
     cout << "4. Back" << endl;
 }
 
@@ -75,8 +73,8 @@ void showProviderMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Provider" << endl;
-    cout << "2. Search Provider" << endl;
-    cout << "3. Update Provider" << endl;
+    cout << "2. Update Provider" << endl;
+    cout << "3. Display Providers" << endl;
     cout << "4. Back" << endl;
 }
 
@@ -87,8 +85,8 @@ void showServiceMenu() {
     cout << "\033[1;32m=============================" << endl;
     cout << "Enter your choice: " << endl;
     cout << "\033[1;33m1. Add Service" << endl;
-    cout << "2. List all Services" << endl;
-    cout << "3. Update Service" << endl;
+    cout << "2. Update Service" << endl;
+    cout << "3. List all Services" << endl;
     cout << "4. Back" << endl;
 }
 

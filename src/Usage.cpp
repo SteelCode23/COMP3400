@@ -43,10 +43,8 @@ vector<Usage> Usage::loadUsage(const std::string& filename, int BillCalendarID) 
         getline(ss, token, ','); u.setProviderId(stoi(token));
         getline(ss, token, ','); u.setServiceId(stoi(token));
         getline(ss, token, ','); u.setBillCalendarId(stoi(token));
-        getline(ss, token, ','); u.setUsageAmount(stod(token)); // Fix: Use stod for double
-        //cout << u.getBillCalendarId() << " " << BillCalendarID << endl;
+        getline(ss, token, ','); u.setUsageAmount(stod(token)); 
         if (u.getBillCalendarId() == BillCalendarID) {
-            cout << u.getUsageId();
             usageData.push_back(u);
         }
     }
@@ -75,16 +73,14 @@ vector<Usage> currentUsage = loadUsage("data/usage.txt", currentBillCalendar);
 vector<Rate> rateRecords = r.loadRates("data/rates.txt");
 //vector<Customer> customers = customerObj.loadCustomers("data/customers.txt");
 int prevBillCalendarId = currentBillCalendar - 1;
-cout << prevBillCalendarId << endl << endl;
+
 vector<Usage> prevUsage = loadUsage("data/usage.txt", prevBillCalendarId);
 
 if (!currentUsage.empty()) {
     cout << "Usage already simulated for Bill Calendar " << currentBillCalendar << "\n";
     return;
 }
-// for (auto us:prevUsage){
-//     cout << us.getUsageId() << endl;
-// }
+
 if (prevUsage.empty()) {
     cout << "Error No Usage ";
     return;

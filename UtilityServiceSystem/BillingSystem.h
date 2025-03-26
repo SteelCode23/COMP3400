@@ -9,14 +9,14 @@
 
 class BillingSystem {
 public:
-    void addProvider(UtilityProvider provider);
+   // void addProvider(UtilityProvider provider);
     void addCustomer(Customer customer);
     void generateBill(Bill bill);
     void trackOverduePayments(Date currentDate);
     void displayBills();
 
 private:
-    std::vector<UtilityProvider> providers;
+  //  std::vector<UtilityProvider> providers;
     std::vector<Customer> customers;
     std::vector<Bill> bills;
 };;

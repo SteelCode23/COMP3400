@@ -1,5 +1,5 @@
 RateID,ServiceID,ProviderID,RateName,VariableRateAmount,FixedRateAmount,UnitofMeasure,MeasuredService
-1,2,1,TestNew,0,80,Monthly,0
+1,2,1,TestNew,10.3,80,Monthly,0
 2,3,1,Bell TV,0,100,Monthly,0
 3,4,1,Bell Mobile,0,70,Monthly,0
 4,5,1,Bell Home Phone,0,30,Monthly,0
