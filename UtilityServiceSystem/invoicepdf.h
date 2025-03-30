@@ -9,7 +9,7 @@ private:
     PDFGenerator pdf;
     Bill bill;
 
-    void generateInvoiceContent();
+    void generateInvoice();
 
 public:
     InvoicePDF(const std::string& filename, const Bill& bill);

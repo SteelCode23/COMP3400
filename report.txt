@@ -1,10 +1,10 @@
-Provider ID    Service ID     Total Bill Amount   Total Amount Paid   
-----------------------------------------------------------------------
-2              1              $1450.66            $0.00               
-4              6              $1842.79            $0.00               
-4              7              $979.12             $0.00               
-4              8              $1075.86            $0.00               
-7              1              $1032.02            $0.00               
-8              1              $850.48             $0.00               
-9              1              $873.64             $0.00               
-10             1              $1401.83            $0.00               
+Provider            Service             Revenue             Income              
+--------------------------------------------------------------------------------
+Enbridge            Test                $1450.45            $0.00               
+Enwin               Hydro Electric      $1842.90            $0.00               
+Enwin               Water               $979.21             $0.00               
+Enwin               Sewerage            $1075.88            $0.00               
+PlanetEnergy        Test                $1031.78            $0.00               
+Link Energy         Test                $850.40             $0.00               
+MyRate Energy       Test                $873.64             $0.00               
+RiteRate Energy     Test                $1401.57            $0.00               
