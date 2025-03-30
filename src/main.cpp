@@ -67,11 +67,8 @@ int main() {
                     case 10:
                         batchService.SimulatePayments();
                         break;
-                    case 11:
-                        Bill b;
-                        
-  
-                        cout << "Generate invoice.";
+                    default:
+                        break;
                 }
                 break;
             case 2:
