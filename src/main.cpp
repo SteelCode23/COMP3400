@@ -150,9 +150,9 @@ int main() {
             default:
                 cout << "\033[1;31mInvalid choice! Try again." << endl;
         }
-        if(choice != 9) 
+        if(choice != 7) 
         waitForKeyPress();
-    } while (choice != 9);
+    } while (choice != 7);
 
     return 0;
 }
