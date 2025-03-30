@@ -1,5 +1,6 @@
 #include "BillCalendar.h"
 #include "Date.h"
+#include "InputHelper.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -80,10 +81,8 @@ bool BillCalendar::createBillCalendar() {
     }
     int newId = maxId + 1; 
     cin.ignore();
-    cout << "Enter Start Date (YYYY-MM-DD): " << endl; 
-    getline(cin, startDateStr);
-    cout << "Enter End Date (YYYY-MM-DD): "<< endl; 
-    getline(cin, endDateStr);
+    startDateStr = getValidatedDate("Enter Start Date (YYYY-MM-DD): ");
+    endDateStr = getValidatedDate("Enter End Date (YYYY-MM-DD): ");
     Date d;
     BillCalendar newCalendar(newId, d.parseDate(startDateStr), d.parseDate(endDateStr), false);
     calendars.push_back(newCalendar);
