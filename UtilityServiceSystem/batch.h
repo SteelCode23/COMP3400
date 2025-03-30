@@ -23,7 +23,7 @@ public:
     void BillingBatch();
     void SimulatePayments();
     void CalculateOverdue();
-
+    void generatePDFInvoices(const std::vector<Bill>& bills);
     void saveBills(const std::string& filename, const std::vector<Bill>& bills, bool overwrite);
     void postPayments(const std::string& filename, const std::vector<Payments>& payments, bool overwrite);
 

@@ -7,6 +7,7 @@
 #include "Usage.h"
 #include "UtilityProvider.h"
 #include "UtilityService.h"
+#include "InvoicePDF.h"
 using namespace std;
 
 int main() {
@@ -66,6 +67,11 @@ int main() {
                     case 10:
                         batchService.SimulatePayments();
                         break;
+                    case 11:
+                        Bill b;
+                        
+  
+                        cout << "Generate invoice.";
                 }
                 break;
             case 2:
@@ -107,7 +113,7 @@ int main() {
             case 4:
                 clearScreen();
                 showServiceMenu();
-                choice4 = getIntInput("Enter customer option: ");
+                choice4 = getIntInput("Enter service option: ");
                 switch(choice4){
                 case 1:
                     us.createService();
