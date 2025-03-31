@@ -189,13 +189,7 @@ void BatchService::generatePDFInvoices(const std::vector<Bill>& bills){
         end = ".pdf";
         std::string filepath = beginning + std::to_string(middle) + end;
         InvoicePDF i(filepath,bill);
-        i.generate();
-            std::string a = "/invoices/";
-        int b = 1234;
-        std::string c = ".pdf";
-
-        
-        
+        i.generate();   
     }
 }
 
