@@ -34,6 +34,10 @@ To run code:  :make clean
               :make
               :./bin/main
 
+Version Control Repo available at:
+https://github.com/SteelCode23/COMP3400/
+
+
 UtilityService
 -void createService()
   Creates a new entry via user input.
@@ -177,3 +181,5 @@ Usage
   Loads usage records from file.
 -void simulateUsage()
   Fills system with randomized usage data.
+
+  

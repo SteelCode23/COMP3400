@@ -13,6 +13,8 @@
 #include "Rate.h"
 #include "Usage.h"
 #include "BillCalendar.h"
+#include "Subscription.h"
+#include "invoicepdf.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -93,95 +95,110 @@ vector<Customer> BatchService::loadCustomers(const string& filename) {
 }
 
 
-vector<Usage> BatchService::loadUsage(const string& filename, int BillCalendarID) {
-    vector<Usage> usageData;
-    try {
-        ifstream file(filename);
-        if (!file.is_open()) throw runtime_error("Failed to open file: " + filename);
-        string line;
-        getline(file, line);
-        while (getline(file, line)) {
-            stringstream ss(line);
-            string token;
-            Usage u;
-            getline(ss, token, ','); u.setCustomerId(stoi(token)) ;
-            getline(ss, token, ','); u.setProviderId(stoi(token));
-            getline(ss, token, ','); u.setServiceId(stoi(token));
-            getline(ss, token, ','); u.setBillCalendarId(stoi(token));
-            getline(ss, token, ','); u.setUsageAmount(stoi(token));
-            if (u.getBillCalendarId() == BillCalendarID) usageData.push_back(u);
-        }
-        file.close();
-    } catch (const exception& e) {
-        cerr << "Error in loadUsage: " << e.what() << endl;
-    }
-    return usageData;
-}
-
-// vector<Rate> BatchService::loadRates(const string& filename) {
-//     vector<Rate> rates;
-//     ifstream file(filename);
-//     string line;
-//     getline(file, line); // Skip header
-//     while (getline(file, line)) {
-//         stringstream ss(line);
-//         string token;
-//         Rate r;
-//         getline(ss, token, ','); r.rateId = stoi(token);
-//         getline(ss, token, ','); r.serviceId = stoi(token);
-//         getline(ss, token, ','); r.providerId = stoi(token);
-//         getline(ss, token, ','); r.rateName = token;
-//         getline(ss, token, ','); r.variableRateAmount = stod(token);
-//         getline(ss, token, ','); r.fixedRateAmount = stod(token);
-//         getline(ss, token, ','); r.unitOfMeasure = token;
-//         getline(ss, token, ','); r.MeasuredUsage = stoi(token);
-//         rates.push_back(r);
-//     }
-//     file.close();
-//     return rates;
-// }
-
 void BatchService::BillingBatch() {
     vector<Bill> bills;
     Rate rateObj;
+    Subscription subObj;
     BillCalendar bc;
+    Usage u;
     int currentBillCalendar = bc.getCurrentBillCalendar().getBillCalendarID();
     vector<Customer> customers = loadCustomers("data/customers.txt");
     vector<Rate> rates = rateObj.loadRates("data/rates.txt");
-    vector<Usage> usageRecords = loadUsage("data/usage.txt", currentBillCalendar);
+    vector<Subscription> subscriptions = subObj.loadSubscriptions("data/subscriptions.txt");
+    vector<Usage> usageRecords = u.loadUsage("data/usage.txt", currentBillCalendar);
     int nextBillingID = getBillingID("data/bills.txt");
+    for (auto& customer : customers) {
+        int customerId = customer.getCustomerID();
+        vector<Subscription> customerSubscriptions;
+        for (auto& sub : subscriptions) {
+            if (sub.getCustomerId() == customerId) {
+                customerSubscriptions.push_back(sub);
+            }
+        }
+        if (customerSubscriptions.empty()) {
+            continue;
+        }
 
-    for (auto& usage : usageRecords) {
-        if (usage.getBillCalendarId() == currentBillCalendar) {
-            float variableRate = 0.0, fixedRate = 0.0;
-            for ( auto& r : rates) {
-                if (r.getProviderId() == usage.getProviderId() && r.getServiceId() == usage.getServiceId()) {
-                    variableRate = r.getVariableRateAmount();
-                    fixedRate = r.getFixedRateAmount();
+        float totalBillAmount = 0.0;
+        int providerId = -1; 
+        int serviceId = -1; 
+        for (auto& sub : customerSubscriptions) {
+            bool usageFound = false;
+            for (auto& usage : usageRecords) {
+                if (usage.getCustomerId() == customerId && usage.getProviderId() == sub.getProviderId() && usage.getServiceId() == sub.getServiceId() && usage.getBillCalendarId() == currentBillCalendar) {
+                    for (auto& rate : rates) {
+                        if (rate.getRateId() == sub.getRateId()) {
+                            float charge = 0.0;
+                            if (rate.getMeasuredUsage() == 0) {
+                                // Non-measured service: use FixedRateAmount only
+                                charge = rate.getFixedRateAmount();
+                            } else {
+                                // Measured service: use current usage * VariableRateAmount + FixedRateAmount
+                                float variableRate = rate.getVariableRateAmount();
+                                float fixedRate = rate.getFixedRateAmount();
+                                charge = (usage.getUsageAmount() * variableRate) + fixedRate;
+                            }
+                            totalBillAmount += charge;
+                            if (providerId == -1) {
+                                providerId = sub.getProviderId();
+                                serviceId = sub.getServiceId();
+                            }
+                            usageFound = true;
+                            break;
+                        }
+                    }
                     break;
                 }
             }
-
-            Bill newBill;
-            newBill.setBillId(nextBillingID++);
-            newBill.setCustomerId(usage.getCustomerId());
-            newBill.setProviderId(usage.getProviderId());
-            newBill.setBillCalendarID(currentBillCalendar);
-            newBill.setServiceId(usage. getServiceId());
-            newBill.setBillAmount((usage.getUsageAmount() * variableRate) + fixedRate);
-            newBill.setAmountPaid(0.0);
-            newBill.setPaidInFull(false);
-            chrono::sys_days today = floor<days>(system_clock::now());
-            newBill.setBillDate(year_month_day{today});
-            sys_days due = today + days{30};
-            newBill.setDueDate(year_month_day{due});
-            newBill.setOverdue(false);
-
-            bills.push_back(newBill);
+            if (!usageFound) {
+                cerr << "Warning: No usage found for CustomerID " << customerId                     << ", ProviderID " << sub.getProviderId()
+                     << ", ServiceID " << sub.getServiceId()
+                     << " in BillCalendarID " << currentBillCalendar << "\n";
+            }
         }
+        if (totalBillAmount == 0.0) {
+            continue;
+        }
+        Bill newBill;
+        newBill.setBillId(nextBillingID++);
+        newBill.setCustomerId(customerId);
+        newBill.setProviderId(providerId);
+        newBill.setBillCalendarID(currentBillCalendar);
+        newBill.setServiceId(serviceId);
+        newBill.setBillAmount(totalBillAmount);
+        newBill.setAmountPaid(0.0);
+        newBill.setPaidInFull(false);
+        chrono::sys_days today = floor<days>(system_clock::now());
+        newBill.setBillDate(year_month_day{today});
+        sys_days due = today + days{30};
+        newBill.setDueDate(year_month_day{due});
+        newBill.setOverdue(false);
+        bills.push_back(newBill);
     }
+
     saveBills("data/bills.txt", bills, false);
+    generatePDFInvoices(bills);
 }
+
+void BatchService::generatePDFInvoices(const std::vector<Bill>& bills){
+    for(auto bill:bills){
+        std::string beginning, end;
+        int middle;
+        beginning = "./invoices/";
+        middle = bill.getBillId();
+        end = ".pdf";
+        std::string filepath = beginning + std::to_string(middle) + end;
+        InvoicePDF i(filepath,bill);
+        i.generate();
+            std::string a = "/invoices/";
+        int b = 1234;
+        std::string c = ".pdf";
+
+        
+        
+    }
+}
+
 
 void BatchService::saveBills(const string &filename, const vector<Bill>& bills, bool overwrite) {
     try {
