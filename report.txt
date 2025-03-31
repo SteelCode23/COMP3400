@@ -1,10 +1,10 @@
 Provider            Service             Revenue             Income              
 --------------------------------------------------------------------------------
-Enbridge            Test                $1450.66            $0.00               
-Enwin               Hydro Electric      $1842.67            $0.00               
-Enwin               Water               $979.18             $0.00               
-Enwin               Sewerage            $1075.86            $0.00               
-PlanetEnergy        Test                $1032.02            $0.00               
-Link Energy         Test                $850.78             $0.00               
-MyRate Energy       Test                $873.64             $0.00               
-RiteRate Energy     Test                $1401.63            $0.00               
+Enbridge            Test                $1450.66            $1450.66            
+Enwin               Hydro Electric      $1842.67            $1842.67            
+Enwin               Water               $979.18             $979.18             
+Enwin               Sewerage            $1075.86            $1075.86            
+PlanetEnergy        Test                $1032.02            $892.67             
+Link Energy         Test                $850.78             $850.78             
+MyRate Energy       Test                $873.64             $845.46             
+RiteRate Energy     Test                $1401.63            $1351.24            
