@@ -8,11 +8,13 @@
 #include "UtilityProvider.h"
 #include "UtilityService.h"
 #include "invoicepdf.h"
+#include "Subscription.h"
 using namespace std;
 
 int main() {
     BatchService batchService;
     Bill bill;
+    Subscription s;
     BillCalendar bc;
     UtilityService us;
     UtilityProvider up;
@@ -84,6 +86,15 @@ int main() {
                     break;
                 case 3:
                     c.displayCustomers();
+                    break;
+                case 4:
+                    s.createSubscription();
+                    break;
+                case 5:
+                    s.updateSubscription();
+                    break;
+                case 6:
+                    s.displaySubscriptions();
                     break;
                 default:
                     break;

@@ -51,7 +51,10 @@ void showCustomerMenu() {
     cout << "\033[1;33m1. Add Customer" << endl;
     cout << "2. Update Customer" << endl;
     cout << "3. Display Customers" << endl;
-    cout << "4. Back" << endl;
+    cout << "4. Add Subscription" << endl;
+    cout << "5. Update Subscriptions" << endl;
+    cout << "6. Display Subscriptions" << endl;
+    cout << "7. Back" << endl;
 }
 
 void showUsageMenu() {
