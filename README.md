@@ -181,5 +181,16 @@ Usage
   Loads usage records from file.
 -void simulateUsage()
   Fills system with randomized usage data.
-
   
+PDFGenerator
+void PDFGenerator::writeHeader() //Writes header
+int PDFGenerator::addObject() //Add a single object
+int PDFGenerator::addStreamObject() //Creates a stream object
+void PDFGenerator::writeObject() //writes the object
+void PDFGenerator::writeStreamObject() //writes the stream object
+void PDFGenerator::writeCrossReferenceTable() //Generates the specific format needed to render a pdf
+void PDFGenerator::finalize() //Generates final pdf
+
+InvoicePDF
+void generateInvoice() //Generates the actual invoice
+void generate() //calls generate and finalize
